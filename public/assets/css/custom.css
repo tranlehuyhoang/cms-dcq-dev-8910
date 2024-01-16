@@ -1,0 +1,10 @@
+.task-arrow {
+	position: absolute;
+	left: -10px;
+	font-size: 1.05rem;
+	top: -2px;
+}
+
+.label-task {
+	position: relative;
+}
