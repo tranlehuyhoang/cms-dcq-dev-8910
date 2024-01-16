@@ -246,7 +246,6 @@
 
                         </div>
                     </li>
-
                     <li class="dropdown notification-list topbar-dropdown">
                         <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown"
                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -267,71 +266,17 @@
                             </div>
 
                             <div class="noti-scroll" data-simplebar>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item active">
-                                    <div class="notify-icon bg-soft-primary text-primary">
-                                        <i class="mdi mdi-comment-account-outline"></i>
-                                    </div>
-                                    <p class="notify-details">Doug Dukes commented on Admin Dashboard
-                                        <small class="text-muted">1 min ago</small>
-                                    </p>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon">
-                                        <img src="/assets/images/users/avatar-2.jpg" class="img-fluid rounded-circle"
-                                            alt="" />
-                                    </div>
-                                    <p class="notify-details">Mario Drummond</p>
-                                    <p class="text-muted mb-0 user-msg">
-                                        <small>Hi, How are you? What about our next meeting</small>
-                                    </p>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon">
-                                        <img src="/assets/images/users/avatar-4.jpg" class="img-fluid rounded-circle"
-                                            alt="" />
-                                    </div>
-                                    <p class="notify-details">Karen Robinson</p>
-                                    <p class="text-muted mb-0 user-msg">
-                                        <small>Wow ! this admin looks good and awesome design</small>
-                                    </p>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-soft-warning text-warning">
-                                        <i class="mdi mdi-account-plus"></i>
-                                    </div>
-                                    <p class="notify-details">New user registered.
-                                        <small class="text-muted">5 hours ago</small>
-                                    </p>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-info">
-                                        <i class="mdi mdi-comment-account-outline"></i>
-                                    </div>
-                                    <p class="notify-details">Caleb Flakelar commented on Admin
-                                        <small class="text-muted">4 days ago</small>
-                                    </p>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-secondary">
-                                        <i class="mdi mdi-heart"></i>
-                                    </div>
-                                    <p class="notify-details">Carlos Crouch liked
-                                        <b>Admin</b>
-                                        <small class="text-muted">13 days ago</small>
-                                    </p>
-                                </a>
+                                @foreach ($notifications as $key => $value)
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item active">
+                                        <div class="notify-icon bg-soft-primary text-primary">
+                                            <img src="<?php echo $value['avatar']; ?>" class="img-fluid rounded-circle"
+                                                alt="" />
+                                        </div>
+                                        <p class="notify-details"><?php echo $value['content']; ?>
+                                            <small class="text-muted"><?php echo $value['diffForHumansInVietnam']; ?> </small>
+                                        </p>
+                                    </a>
+                                @endforeach
                             </div>
 
                             <!-- All-->
@@ -343,6 +288,29 @@
 
                         </div>
                     </li>
+
+                    <script>
+                        $(document).ready(function() {
+                            $('.dropdown.notification-list.topbar-dropdown').on('click', function() {
+                                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                                // Thực hiện yêu cầu AJAX GET tại đây
+                                $.ajax({
+                                    url: '{{ route('notification.read') }}',
+                                    method: 'GET',
+                                    data: {
+                                        _token: '{{ csrf_token() }}' // Thêm mã CSRF vào yêu cầu
+                                    },
+                                    success: function(response) {
+                                        // Xử lý kết quả trả về từ yêu cầu GET tại đây
+                                    },
+                                    error: function(xhr, status, error) {
+                                        // Xử lý lỗi tại đây
+                                    }
+                                });
+                            });
+                        });
+                    </script>
 
                     <li class="dropdown notification-list topbar-dropdown">
                         <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light"

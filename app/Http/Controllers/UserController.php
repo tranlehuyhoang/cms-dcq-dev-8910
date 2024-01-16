@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Roles;
+use App\Models\UserHasNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -77,9 +79,19 @@ class UserController extends BaseController
 		}
 	}
 
+
 	public function login(Request $request)
 	{
 		if (Auth::check()) {
+			$user_login = Auth::user();
+			$content = $user_login->name . ' đã đăng nhập';
+
+			// Tạo thông báo
+			Notification::create([
+				'content' => $content,
+				'sender_id' => $user_login->id,
+			]);
+
 			return redirect(route('dashboard'));
 		}
 
@@ -87,7 +99,24 @@ class UserController extends BaseController
 			'email' => $request->input('email'),
 			'password' => $request->input('password'),
 		), $request->input('remember'))) {
-			return redirect(route('dashboard'));
+			$userLogin = Auth::user();
+			$content = $userLogin->name . ' đã đăng nhập';
+
+			// Tạo thông báo
+			$notification = Notification::create([
+				'content' => $content,
+				'sender_id' => $userLogin->id,
+			]);
+
+			$notificationId = $notification->id;
+			$userId = $userLogin->id;
+			$markRead = 0;
+
+			UserHasNotification::create([
+				'notification_id' => $notificationId,
+				'user_id' => $userId,
+				'mark_read' => $markRead,
+			]);
 		}
 
 		return redirect()->back();

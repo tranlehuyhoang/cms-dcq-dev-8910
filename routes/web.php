@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TaskCommentController;
+use App\Http\Controllers\UserHasNotificationController;
 use App\Models\TaskComment;
 
 Route::get('/clear-cache', function () {
@@ -57,4 +58,7 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('comment/pagination', [TaskCommentController::class, 'pagination'])->name('taskcomment.pagination');
 	Route::post('comment/getcommentlevel2', [TaskCommentController::class, 'getcommentlevel2'])->name('taskcomment.getcommentlevel2');
 	Route::post('comment/getcommentlevel3', [TaskCommentController::class, 'getcommentlevel3'])->name('taskcomment.getcommentlevel3');
+
+	//Notification
+	Route::get('notification/read', [UserHasNotificationController::class, 'markAsRead'])->name('notification.read');
 });

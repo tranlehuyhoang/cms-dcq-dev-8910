@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Auth;
@@ -98,8 +99,26 @@ class TaskController extends BaseController
 			// dd($data['arTasks_user']);
 		}
 		// dd($data['arTasks']);
+		$data['notifications'] = Notification::orderBy('created_at', 'desc')
+			->take(3)
+			->with('user')
+			->get();
 
+		foreach ($data['notifications'] as $notificationId => $notification) {
+			$createdDate = \Carbon\Carbon::parse($notification->created_at)->setTimezone('Asia/Ho_Chi_Minh');
+			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
+			$user = $notification->user;
+			$avatar = $user->getFirstMedia('avatar');
+			$hasAvatar = $user->hasMedia('avatar');
 
+			if ($hasAvatar) {
+				$data['notifications'][$notificationId]['avatar'] = $avatar->getUrl();
+			} else {
+				$data['notifications'][$notificationId]['avatar'] = '/assets/images/users/avatar-basic.jpg';
+				// Xử lý tương ứng tại đây
+			}
+		}
+		// dd($data['notifications']);
 
 		$data['arProject'] = Projects::get()->pluck('name', 'id')->toArray();
 		$data['user_id'] = $user->id;
