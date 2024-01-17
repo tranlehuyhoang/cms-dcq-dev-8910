@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
+	const LIMIT = 3;
 	protected $table = 'notifications';
 	protected $fillable = ['content', 'sender_id', 'created_at', 'updated_at'];
 

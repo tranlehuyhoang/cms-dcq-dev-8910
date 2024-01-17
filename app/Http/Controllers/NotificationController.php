@@ -1,20 +1,41 @@
 <?php
 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
 use App\Models\Notification;
-use Illuminate\Support\Facades\Auth;
+use App\Models\UserHasNotification;
+use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-	public function index()
+	public function getNewNotification()
 	{
-		// Lấy 3 thông báo mới nhất và join với bảng người dùng
-		$notifications = Notification::orderBy('created_at', 'desc')
-			->take(3)
-			->join('users', 'notifications.user_id', '=', 'users.id')
-			->select('notifications.content', 'users.name')
+		$data['notifications'] = Notification::orderBy('created_at', 'desc')
+			->take(Notification::LIMIT)
+			->with('user')
+			->with('userHasNotification')
 			->get();
 
-		return view('notifications.index', compact('notifications'));
+		foreach ($data['notifications'] as $notificationId => $notification) {
+			$createdDate = \Carbon\Carbon::parse($notification->created_at)->setTimezone('Asia/Ho_Chi_Minh');
+			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
+			// Các xử lý dữ liệu khác trong vòng lặp
+
+			// Xử lý avatar
+			$user = $notification->user;
+			$avatar = $user->getFirstMedia('avatar');
+			$hasAvatar = $user->hasMedia('avatar');
+
+			if ($hasAvatar) {
+				$data['notifications'][$notificationId]['avatar'] = $avatar->getUrl();
+			} else {
+				$data['notifications'][$notificationId]['avatar'] = '/assets/images/users/avatar-basic.jpg';
+				// Xử lý tương ứng tại đây
+			}
+		}
+		$html = view('notifications.render_new_notification', ['notifications' => $data['notifications']])->render();
+		// dd($html);
+
+		return response()->json(['html' => $html], 200);
 	}
 }

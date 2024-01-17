@@ -265,29 +265,8 @@
                                 </h5>
                             </div>
 
-                            <div class="noti-scroll" data-simplebar>
-                                @if ($notifications->isEmpty())
-                                    <a href="javascript:void(0);"
-                                        class="dropdown-item notify-item jutifyle-contencenter">
-                                        <div class=" text-center">
-                                            No notification
-                                        </div>
-                                    </a>
-                                @else
-                                    @foreach ($notifications as $key => $value)
-                                        <a href="javascript:void(0);"
-                                            class="dropdown-item notify-item {{ $value['userHasNotification'][0]['mark_read'] == 1 ? '' : 'active' }}">
-                                            <div class="notify-icon bg-soft-primary text-primary">
-                                                <img src="{{ $value['avatar'] }}" class="img-fluid rounded-circle"
-                                                    alt="" />
-                                            </div>
-                                            <p class="notify-details">{{ $value['content'] }}
-                                                <small
-                                                    class="text-muted">{{ $value['diffForHumansInVietnam'] }}</small>
-                                            </p>
-                                        </a>
-                                    @endforeach
-                                @endif
+                            <div class="noti-scroll" id="noti-scroll" data-simplebar>
+
                             </div>
 
                             <!-- All-->
@@ -302,6 +281,8 @@
 
                     <script>
                         $(document).ready(function() {
+                            console.log('first')
+
                             $('.dropdown.notification-list.topbar-dropdown').on('click', function() {
                                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                                 console.log('first');
@@ -319,6 +300,23 @@
                                         // Xử lý lỗi tại đây
                                     }
                                 });
+                            });
+                            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                            $.ajax({
+
+                                url: '{{ route('notification.new') }}',
+                                method: 'GET',
+                                data: {
+                                    _token: '{{ csrf_token() }}' // Thêm mã CSRF vào yêu cầu
+                                },
+                                success: function(response) {
+                                    console.log('first')
+                                    // Hiển thị HTML trả về
+                                    $('#noti-scroll').html(response.html);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.log(error);
+                                }
                             });
                         });
                     </script>

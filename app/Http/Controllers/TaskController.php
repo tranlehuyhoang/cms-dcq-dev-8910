@@ -99,28 +99,7 @@ class TaskController extends BaseController
 			// dd($data['arTasks_user']);
 		}
 		// dd($data['arTasks']);
-		$data['notifications'] = Notification::orderBy('created_at', 'desc')
-			->take(3)
-			->with('user')
-			->with('userHasNotification')
-			->get();
 
-		foreach ($data['notifications'] as $notificationId => $notification) {
-			// dd($notification['userHasNotification'][0]['mark_read']);
-			// dd($notification);
-			$createdDate = \Carbon\Carbon::parse($notification->created_at)->setTimezone('Asia/Ho_Chi_Minh');
-			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
-			$user = $notification->user;
-			$avatar = $user->getFirstMedia('avatar');
-			$hasAvatar = $user->hasMedia('avatar');
-
-			if ($hasAvatar) {
-				$data['notifications'][$notificationId]['avatar'] = $avatar->getUrl();
-			} else {
-				$data['notifications'][$notificationId]['avatar'] = '/assets/images/users/avatar-basic.jpg';
-				// Xử lý tương ứng tại đây
-			}
-		}
 		// dd($data['notifications']);
 
 		$data['arProject'] = Projects::get()->pluck('name', 'id')->toArray();
