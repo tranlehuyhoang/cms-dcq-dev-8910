@@ -102,9 +102,12 @@ class TaskController extends BaseController
 		$data['notifications'] = Notification::orderBy('created_at', 'desc')
 			->take(3)
 			->with('user')
+			->with('userHasNotification')
 			->get();
 
 		foreach ($data['notifications'] as $notificationId => $notification) {
+			// dd($notification['userHasNotification'][0]['mark_read']);
+			// dd($notification);
 			$createdDate = \Carbon\Carbon::parse($notification->created_at)->setTimezone('Asia/Ho_Chi_Minh');
 			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
 			$user = $notification->user;

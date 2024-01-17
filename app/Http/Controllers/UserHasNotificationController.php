@@ -9,8 +9,9 @@ class UserHasNotificationController extends Controller
 {
 	public function markAsRead(Request $request)
 	{
-		// Sửa tất cả các hàng trong bảng UserHasNotification và đặt mark_read là 2
-		UserHasNotification::update(['mark_read' => 1]);
+		// Sửa tất cả các hàng trong bảng UserHasNotification và đặt mark_read là 1
+		UserHasNotification::query()->update(['mark_read' => 1]);
+		// dd($request);
 
 		return response()->json(['message' => 'Successfully marked as read']);
 	}
