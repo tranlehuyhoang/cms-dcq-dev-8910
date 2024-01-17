@@ -117,6 +117,12 @@
                 <li class="menu-title mt-2">Apps</li>
 
                 <li>
+                    <a href="{{ route('notifications') }}">
+                        <i class="ri-message-2-line"></i>
+                        <span> Notifications </span>
+                    </a>
+                </li>
+                <li>
                     <a href="apps-chat.html">
                         <i class="ri-message-2-line"></i>
                         <span> Chat </span>

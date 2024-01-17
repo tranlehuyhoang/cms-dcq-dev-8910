@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+
+	public function index()
+	{
+		$data['notifications'] = Notification::with('user', 'userHasNotification.user')
+			->orderBy('created_at', 'desc')
+			->get();
+		// dd($data['notifications']);
+		// $data['html'] = view('notifications.render_all_notification', ['notifications' => $data['notifications']])->render();
+
+		return view('notifications.index', $data);
+	}
 	public function getNewNotification()
 	{
 		$data['notifications'] = Notification::orderBy('created_at', 'desc')

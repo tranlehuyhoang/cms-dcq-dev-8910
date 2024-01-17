@@ -579,10 +579,10 @@
                                                     $('#reply_id').val('0');
 
                                                     if (reply_id == 0) {
-                                                        $('.clerfix').html(response.html);
+                                                        $('.clerfix').after(response.html);
 
                                                     } else {
-                                                        $('#child_' + reply_id).html(response.html);
+                                                        $('#child_' + reply_id).after(response.html);
 
                                                     }
                                                     // Tạo HTML cho comment mới

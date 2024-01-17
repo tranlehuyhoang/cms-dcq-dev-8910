@@ -64,4 +64,5 @@ Route::middleware(['auth'])->group(function () {
 	//Notification
 	Route::get('notification/new', [NotificationController::class, 'getNewNotification'])->name('notification.new');
 	Route::get('notification/read', [UserHasNotificationController::class, 'markAsRead'])->name('notification.read');
+	Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
 });
