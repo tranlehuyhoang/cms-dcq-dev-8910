@@ -13,7 +13,8 @@ return [
 
 	'revenue' => 'Revenue',
 	'customer' => 'Customer',
-	
+
+	'dashboard' => 'Dashboard',
 
 	'projects' => 'Projects',
 	'project_add_new' => 'Add new project',

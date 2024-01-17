@@ -91,80 +91,94 @@
                                                         </thead>
                                                         <tbody>
                                                             @foreach ($notifications as $notification)
-                                                                <div class="notification">
-                                                                    <h3>{{ $notification->content }}</h3>
-                                                                    <p>{{ $notification->content }}</p>
-                                                                    <p>Created at: {{ $notification->created_at }}</p>
-                                                                    <p>User: {{ $notification->user->name }}</p>
-                                                                    <p>User Has Notification:
+                                                                <tr id=" " class="child_tasks_ ">
+                                                                    <td>
 
-                                                                    </p>
-                                                                </div>
-                                                            @endforeach
-                                                            <tr id=" " class="child_tasks_ ">
-                                                                <td>
+                                                                        <label class="ps-1 label-task form-check-label  "
+                                                                            for="tasktodayCheck01">
+                                                                            <span class="task-arrow">
 
-                                                                    <label class="ps-1 label-task form-check-label  "
-                                                                        for="tasktodayCheck01">
-                                                                        <span class="task-arrow">
+                                                                            </span>
+                                                                            #<?php echo $notification->id; ?>
+                                                                        </label>
+                                                                    </td>
 
+
+                                                                    <td>
+                                                                        <span class=""><?php echo $notification->user->name; ?></span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php foreach ($notification->userHasNotification as $userNotification): ?>
+                                                                        <span class="badge badge-soft-success p-1">
+                                                                            <img src="<?php echo $userNotification->userAvatar; ?>" alt="image"
+                                                                                class="avatar-sm img-thumbnail rounded-circle"
+                                                                                title="Houston Fritz"
+                                                                                style="width: 20px; height: 20px; padding: 0px" />
+                                                                            <?php echo $userNotification->user->name; ?>
                                                                         </span>
-                                                                        #
-                                                                    </label>
-                                                                </td>
+                                                                        <?php endforeach; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class=""><?php echo $notification->content; ?></span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class=""><?php echo $notification->diffForHumansInVietnam; ?></span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="">
+                                                                            @if ($notification->userHasNotification[0]->mark_read == 1)
+                                                                                <span
+                                                                                    class="badge badge-soft-success p-1">Yes</span>
+                                                                            @else
+                                                                                <span
+                                                                                    class="badge badge-soft-danger p-1">No</span>
+                                                                            @endif
+                                                                        </span>
+                                                                    </td>
 
 
-                                                                <td>
-                                                                    <span class="">1</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="">1</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="">1</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="">1</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="">1</span>
-                                                                </td>
+                                                                    <td>
+                                                                        <ul class="list-inline table-action m-0">
+                                                                            <li class="list-inline-item">
+                                                                                <a href=" " class="action-icon px-1">
+                                                                                    <i
+                                                                                        class="mdi mdi-square-edit-outline"></i></a>
+                                                                            </li>
+                                                                            <li class="list-inline-item">
+                                                                                <div class="dropdown">
+                                                                                    <a class="action-icon px-1 dropdown-toggle"
+                                                                                        href="#"
+                                                                                        data-bs-toggle="dropdown"
+                                                                                        aria-haspopup="true"
+                                                                                        aria-expanded="false">
+                                                                                        <i
+                                                                                            class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
 
-
-                                                                <td>
-                                                                    <ul class="list-inline table-action m-0">
-                                                                        <li class="list-inline-item">
-                                                                            <a href=" " class="action-icon px-1"> <i
-                                                                                    class="mdi mdi-square-edit-outline"></i></a>
-                                                                        </li>
-                                                                        <li class="list-inline-item">
-                                                                            <div class="dropdown">
-                                                                                <a class="action-icon px-1 dropdown-toggle"
-                                                                                    href="#" data-bs-toggle="dropdown"
-                                                                                    aria-haspopup="true"
-                                                                                    aria-expanded="false">
-                                                                                    <i class="mdi mdi-dots-vertical"></i>
-                                                                                </a>
-
-                                                                                <div
-                                                                                    class="dropdown-menu dropdown-menu-end">
-                                                                                    <a class="dropdown-item"
-                                                                                        href="#">Action</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="#">Another action</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="#">Something else
-                                                                                        here</a>
+                                                                                    <div
+                                                                                        class="dropdown-menu dropdown-menu-end">
+                                                                                        <a class="dropdown-item"
+                                                                                            href="#">Action</a>
+                                                                                        <a class="dropdown-item"
+                                                                                            href="#">Another
+                                                                                            action</a>
+                                                                                        <a class="dropdown-item"
+                                                                                            href="#">Something else
+                                                                                            here</a>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                </td>
-                                                            </tr>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
 
 
                                                         </tbody>
                                                     </table>
+                                                    <div class="pagination">
+                                                        {{ $notifications->links() }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

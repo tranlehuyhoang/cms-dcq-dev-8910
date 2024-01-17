@@ -3,21 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\User;
 use App\Models\UserHasNotification;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class NotificationController extends Controller
 {
 
 	public function index()
 	{
-		$data['notifications'] = Notification::with('user', 'userHasNotification.user')
+		$perPage = 1; // Số lượng thông báo hiển thị trên mỗi trang
+		$notifications = Notification::with('user', 'userHasNotification.user')
 			->orderBy('created_at', 'desc')
-			->get();
-		// dd($data['notifications']);
-		// $data['html'] = view('notifications.render_all_notification', ['notifications' => $data['notifications']])->render();
+			->paginate($perPage);
 
-		return view('notifications.index', $data);
+		foreach ($notifications as $notification) {
+			foreach ($notification['userHasNotification'] as $userHasNotification) {
+
+				// dd($userHasNotification->user);
+				$user = User::find($userHasNotification->user->id);
+
+				$avatarPath = '/assets/images/users/avatar-basic.jpg';
+				$avatar = $user->getFirstMedia('avatar');
+				$hasAvatar = $user->hasMedia('avatar');
+
+				if ($hasAvatar) {
+					$avatarPath = $avatar->getUrl();
+				}
+
+				$userHasNotification->userAvatar = $avatarPath;
+			}
+			$user = User::find($notification->sender_id);
+
+			$avatarPath = '/assets/images/users/avatar-basic.jpg';
+			$avatar = $user->getFirstMedia('avatar');
+			$hasAvatar = $user->hasMedia('avatar');
+
+			if ($hasAvatar) {
+				$avatarPath = $avatar->getUrl();
+			}
+
+			$createdDate = $notification->created_at->setTimezone('Asia/Ho_Chi_Minh');
+			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
+			$notification->senderAvatar = $avatarPath;
+		}
+
+		return view('notifications.index', compact('notifications'));
 	}
 	public function getNewNotification()
 	{

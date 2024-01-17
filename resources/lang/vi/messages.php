@@ -45,5 +45,6 @@ return [
 	'user_point_accumulated' => 'Điểm tích lũy',
 	'user_expertise_coefficient' => 'Hệ số chuyên môn',
 	'user_allowance' => 'Phụ cấp',
-	'user_avatar' => 'Ảnh đại diện'
+	'user_avatar' => 'Ảnh đại diện',
+	'dashboard' => 'Dashboard'
 ];
