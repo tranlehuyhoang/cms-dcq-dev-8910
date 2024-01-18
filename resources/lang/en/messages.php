@@ -16,6 +16,11 @@ return [
 
 	'dashboard' => 'Dashboard',
 
+	'title' => 'Title',
+	'notifications' => 'Notifications',
+	'receiver' => 'Receiver',
+	'content' => 'Content',
+
 	'projects' => 'Projects',
 	'project_add_new' => 'Add new project',
 	'project_edit' => 'Edit project',

@@ -102,9 +102,10 @@ class UserController extends BaseController
 			$userLogin = Auth::user();
 			$content = $userLogin->name . ' đã đăng nhập';
 
-			// Tạo thông báo
+			// Tạo thông báo	
 			$notification = Notification::create([
 				'content' => $content,
+				'title' => 'Đăng nhập',
 				'sender_id' => $userLogin->id,
 			]);
 
@@ -114,7 +115,7 @@ class UserController extends BaseController
 
 			UserHasNotification::create([
 				'notification_id' => $notificationId,
-				'user_id' => $userId,
+				'user_id' => 0,
 				'mark_read' => $markRead,
 			]);
 		}

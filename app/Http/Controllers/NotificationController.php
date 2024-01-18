@@ -7,14 +7,18 @@ use App\Models\User;
 use App\Models\UserHasNotification;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
 
 	public function index()
 	{
-		$perPage = 1; // Số lượng thông báo hiển thị trên mỗi trang
+		$perPage = 3; // Số lượng thông báo hiển thị trên mỗi trang
 		$notifications = Notification::with('user', 'userHasNotification.user')
+			->whereHas('userHasNotification.user', function ($query) {
+				$query->where('user_id', '>', 0);
+			})
 			->orderBy('created_at', 'desc')
 			->paginate($perPage);
 
@@ -51,6 +55,51 @@ class NotificationController extends Controller
 
 		return view('notifications.index', compact('notifications'));
 	}
+	public function create()
+	{
+		$user = Auth::user();
+
+		$data['users'] = User::where('id', '!=', $user->id)->get();
+
+		foreach ($data['users'] as $userData) {
+			$avatarPath = '/assets/images/users/avatar-basic.jpg';
+			$avatar = $userData->getFirstMedia('avatar');
+			$hasAvatar = $userData->hasMedia('avatar');
+
+			if ($hasAvatar) {
+				$avatarPath = $avatar->getUrl();
+			}
+
+			$userData->avatarPath = $avatarPath;
+		}
+		// dd($data['users']);
+
+		return view('notifications.create', $data);
+	}
+	public function store(Request $request)
+	{
+		$user = Auth::user();
+		$content = $request->input('content');
+
+		$notification = Notification::create([
+			'sender_id' => $user->id,
+			'content' => $content
+		]);
+
+		$selectedUsers = $request->input('selected_users');
+
+		foreach ($selectedUsers as $selectedUser) {
+			UserHasNotification::create([
+				'notification_id' => $notification->id,
+				'user_id' => $selectedUser,
+				'mark_read' => 0
+			]);
+		}
+		return redirect()->route('notifications');
+		// Additional code if needed
+
+		// Return a response or redirect
+	}
 	public function getNewNotification()
 	{
 		$data['notifications'] = Notification::orderBy('created_at', 'desc')
@@ -80,5 +129,65 @@ class NotificationController extends Controller
 		// dd($html);
 
 		return response()->json(['html' => $html], 200);
+	}
+	public function edit($id)
+	{
+		$notification = Notification::with('user', 'userHasNotification.user')
+			->where('id', $id)
+			->whereHas('userHasNotification.user', function ($query) {
+				$query->where('user_id', '>', 0);
+			})
+			->orderBy('created_at', 'desc')
+			->first(); // Retrieve the notification as a single instance
+
+		$users = User::all(); // Retrieve all users
+
+		return view('notifications.edit', compact('notification', 'id', 'users'));
+	}
+	public function update(Request $request)
+	{
+		$notification_id = $request->input('notification_id');
+		// Retrieve the notification
+		$notification = Notification::find($notification_id);
+		if (!$notification) {
+			// Handle the case when the notification is not found
+			// You can redirect back with an error message or return a JSON response
+			return back()->with('error', 'Notification not found.');
+		}
+		// Update the notification with the new data
+		// Modify the code below to update the fields according to your needs
+		$notification->title = $request->input('title');
+		$notification->content = $request->input('content');
+		// Save the updated notification
+		$notification->save();
+		UserHasNotification::where('notification_id', $request->input('notification_id'))
+			->delete();
+		$selectedUsers = $request->input('selected_users');
+
+		foreach ($selectedUsers as $selectedUser) {
+			UserHasNotification::create([
+				'notification_id' => $notification_id,
+				'user_id' => $selectedUser,
+				'mark_read' => 0
+			]);
+		}
+		// Redirect to a success page or return a JSON response
+		return redirect()->route('notifications')->with('success', 'Notification updated successfully.');
+	}
+	public function delete($id)
+	{
+		// Retrieve the notification
+		$notification = Notification::find($id);
+		if (!$notification) {
+			// Handle the case when the notification is not found
+			// You can redirect back with an error message or return a JSON response
+			return back()->with('error', 'Notification not found.');
+		}
+		// Delete the notification
+		$notification->delete();
+		UserHasNotification::where('notification_id', $id)
+			->delete();
+		// Redirect to a success page or return a JSON response
+		return redirect()->route('notifications')->with('success', 'Notification updated successfully.');
 	}
 }

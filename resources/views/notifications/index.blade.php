@@ -33,7 +33,7 @@
                                     <!-- cta -->
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <a href="{{ route('task.add', 0) }}"
+                                            <a href="{{ route('notifications.create', 0) }}"
                                                 class="btn btn-primary waves-effect waves-light"><i
                                                     class='fe-plus me-1'></i>Add New</a>
                                         </div>
@@ -108,16 +108,47 @@
                                                                         <span class=""><?php echo $notification->user->name; ?></span>
                                                                     </td>
                                                                     <td>
-                                                                        <?php foreach ($notification->userHasNotification as $userNotification): ?>
-                                                                        <span class="badge badge-soft-success p-1">
+                                                                        <?php 
+                                                                            $count = 0;
+                                                                            foreach ($notification->userHasNotification as $userNotification):
+                                                                                $count++;
+                                                                        ?>
+                                                                        <span class="badge badge-soft-success "
+                                                                            style="display:<?php echo $count > 3 ? 'none' : ''; ?>"
+                                                                            id="<?php echo $count > 3 ? 'receiver_' . $notification->id : ''; ?>">
                                                                             <img src="<?php echo $userNotification->userAvatar; ?>" alt="image"
                                                                                 class="avatar-sm img-thumbnail rounded-circle"
                                                                                 title="Houston Fritz"
                                                                                 style="width: 20px; height: 20px; padding: 0px" />
                                                                             <?php echo $userNotification->user->name; ?>
                                                                         </span>
+
+
+
                                                                         <?php endforeach; ?>
+
+                                                                        <?php if ($count >= 3): ?>
+                                                                        <i class="fa fa-arrow-right"
+                                                                            onclick="myFunction(<?php echo $notification->id; ?>)"></i>
+                                                                        <?php endif; ?>
+
+                                                                        <!-- Add a button with onclick event -->
                                                                     </td>
+
+                                                                    <script>
+                                                                        function myFunction(id) {
+                                                                            var receiver = $('span#receiver_' + id);
+                                                                            var icon = receiver.find('i.fa');
+
+                                                                            if (receiver.is(':visible')) {
+                                                                                receiver.hide();
+                                                                                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                                                                            } else {
+                                                                                receiver.show();
+                                                                                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                                                                            }
+                                                                        }
+                                                                    </script>
                                                                     <td>
                                                                         <span class=""><?php echo $notification->content; ?></span>
                                                                     </td>
@@ -157,14 +188,11 @@
 
                                                                                     <div
                                                                                         class="dropdown-menu dropdown-menu-end">
+
                                                                                         <a class="dropdown-item"
-                                                                                            href="#">Action</a>
+                                                                                            href="{{ route('notifications.edit', ['id' => $notification->id]) }}">Edit</a>
                                                                                         <a class="dropdown-item"
-                                                                                            href="#">Another
-                                                                                            action</a>
-                                                                                        <a class="dropdown-item"
-                                                                                            href="#">Something else
-                                                                                            here</a>
+                                                                                            href="{{ route('notifications.delete', ['id' => $notification->id]) }}">Delete</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </li>
@@ -172,8 +200,6 @@
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
-
-
                                                         </tbody>
                                                     </table>
                                                     <div class="pagination">

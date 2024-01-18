@@ -65,4 +65,9 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('notification/new', [NotificationController::class, 'getNewNotification'])->name('notification.new');
 	Route::get('notification/read', [UserHasNotificationController::class, 'markAsRead'])->name('notification.read');
 	Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
+	Route::get('notification/create', [NotificationController::class, 'create'])->name('notifications.create');
+	Route::get('notification/edit/{id}', [NotificationController::class, 'edit'])->name('notifications.edit');
+	Route::put('notification/update', [NotificationController::class, 'update'])->name('notifications.update');
+	Route::post('notification/store', [NotificationController::class, 'store'])->name('notifications.store');
+	Route::get('notification/delete/{id}', [NotificationController::class, 'delete'])->name('notifications.delete');
 });
