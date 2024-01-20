@@ -99,28 +99,11 @@ class UserController extends BaseController
 			'email' => $request->input('email'),
 			'password' => $request->input('password'),
 		), $request->input('remember'))) {
-			$userLogin = Auth::user();
-			$content = $userLogin->name . ' đã đăng nhập';
-
-			// Tạo thông báo	
-			$notification = Notification::create([
-				'content' => $content,
-				'title' => 'Đăng nhập',
-				'sender_id' => $userLogin->id,
-			]);
-
-			$notificationId = $notification->id;
-			$userId = $userLogin->id;
-			$markRead = 0;
-
-			UserHasNotification::create([
-				'notification_id' => $notificationId,
-				'user_id' => 0,
-				'mark_read' => $markRead,
-			]);
+			return redirect(route('dashboard'));
+		} else {
+			$error = 'login_error';
+			return redirect()->back()->with('error', $error);
 		}
-
-		return redirect()->back();
 	}
 
 	public function logout()

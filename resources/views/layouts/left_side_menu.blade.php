@@ -119,15 +119,28 @@
                 <li>
                     <a href="{{ route('notifications') }}">
                         <i class="ri-message-2-line"></i>
-                        <span> Notifications </span>
+                        <span> {{ __('messages.notifications') }} </span>
                     </a>
                 </li>
                 <li>
-                    <a href="apps-chat.html">
+                    <a href="{{ route('chat.index') }}">
                         <i class="ri-message-2-line"></i>
-                        <span> Chat </span>
+                        <span> {{ __('messages.chat') }} </span>
                     </a>
                 </li>
+
+                <?php 
+                if($currentUser->role_id == 1) {
+                    ?>
+                    <li>
+                        <a href="{{ route('skill.index') }}">
+                            <i class="ri-building-4-line"></i>
+                            <span> {{ __('messages.skills') }} </span>
+                        </a>
+                    </li>
+                    <?php 
+                }
+                ?>
 
                 <li>
                     <a href="#sidebarEcommerce" data-bs-toggle="collapse" aria-expanded="false"
@@ -150,6 +163,11 @@
                             <li>
                                 <a href="ecommerce-product-create.html">Create Product</a>
                             </li>
+
+
+                            
+
+
                             <li>
                                 <a href="ecommerce-customers.html">Customers</a>
                             </li>
@@ -217,24 +235,7 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#sidebarContacts" data-bs-toggle="collapse" aria-expanded="false"
-                        aria-controls="sidebarContacts">
-                        <i class="ri-profile-line"></i>
-                        <span> Contacts </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="sidebarContacts">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('user.index') }}">{{ __('messages.user_member_list') }}</a>
-                            </li>
-                            <li>
-                                <a href="contacts-profile.html">Profile</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                
 
                 <li>
                     <a href="apps-file-manager.html">

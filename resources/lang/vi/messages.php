@@ -10,9 +10,18 @@ return [
 	'due_date' => 'Ngày hết hạn',
 	'description' => 'Mô tả',
 	'upload_file' => 'Upload file',
+	'dashboard' => 'Tổng quát',
+	'login_error' => 'Sai mật khẩu hoặc email',
+
+	'chat' => 'Chat',
 
 	'revenue' => 'Doanh thu',
 	'customer' => 'Khách hàng',
+
+	'title' => 'Tiêu đề',
+	'notifications' => 'Thông báo',
+	'receiver' => 'Người nhận',
+	'content' => 'Nội dung',
 
 	'projects' => 'Dự án',
 	'project_add_new' => 'Thêm mới dự án',
@@ -32,6 +41,10 @@ return [
 	'task_priority' => 'Độ ưu tiên',
 	'task_status' => 'Trạng thái',
 
+	'skills' => 'Kỹ năng',
+	'skill_add_new' => 'Thêm mới kỹ năng',
+	'skill_edit' => 'Sửa kỹ năng',
+
 	'user_member_list' => 'Nhân sự',
 	'user_add_new' => 'Thêm nhân sự',
 	'user_edit' => 'Sửa',
@@ -45,6 +58,5 @@ return [
 	'user_point_accumulated' => 'Điểm tích lũy',
 	'user_expertise_coefficient' => 'Hệ số chuyên môn',
 	'user_allowance' => 'Phụ cấp',
-	'user_avatar' => 'Ảnh đại diện',
-	'dashboard' => 'Dashboard'
+	'user_avatar' => 'Ảnh đại diện'
 ];

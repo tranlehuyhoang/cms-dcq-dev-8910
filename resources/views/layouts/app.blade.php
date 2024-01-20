@@ -34,7 +34,7 @@
     <!-- icons -->
     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="/assets/css/main.css" rel="stylesheet" type="text/css" /> -->
 
     <!-- Theme Config Js -->
     <script src="/assets/js/config.js"></script>
@@ -328,20 +328,20 @@
                             data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                             aria-expanded="false">
                             <?php
-                            $user = Auth::user();
-                            if($user->getFirstMedia('avatar')){
+                            if($currentUser->getFirstMedia('avatar')){
                                 ?>
-                            <img src="<?php echo $user->getFirstMedia('avatar')->getFullUrl(); ?>" alt="user-image" class="rounded-circle">
-                            <?php
+                                <img src="<?php echo $currentUser->getFirstMedia('avatar')->getFullUrl() ?>" alt="user-image" class="rounded-circle">
+                                <?php
                             } else {
                                 ?>
-                            <img src="/assets/images/users/avatar-basic.jpg" alt="user-image" class="rounded-circle">
-                            <?php
+                                <img src="/assets/images/users/avatar-basic.jpg" alt="user-image" class="rounded-circle">
+                                <?php
                             }
                             ?>
 
                             <span class="pro-user-name ms-1">
-                                <?php echo $user->name; ?> <i class="mdi mdi-chevron-down"></i>
+                                <?php echo $currentUser->name ?> <i class="mdi mdi-chevron-down"></i>
+
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
@@ -1076,14 +1076,15 @@
     <script src="/assets/libs/footable/footable.all.min.js"></script>
 
     <!-- Init js -->
-    <script src="/assets/js/pages/foo-tables.init.js"></script>
+    <!-- <script src="/assets/js/pages/foo-tables.init.js"></script> -->
     <script src="/assets/js/pages/form-advanced.init.js"></script>
     <script src="/assets/js/pages/form-quilljs.init.js"></script>
     <script src="/assets/js/pages/form-fileuploads.init.js"></script>
+    <!-- <script src="/assets/js/vendor.min.js"></script> -->
 
     <!-- App js -->
     <script src="/assets/js/app.min.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <!-- <script src="/assets/js/min.js"></script> -->
 
 </body>
 

@@ -12,11 +12,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">{{ __('messages.tasks') }}</h4>
+                        <h4 class="page-title">{{ __('messages.notifications') }}</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">{{ __('messages.dcq') }}</a></li>
-                                <li class="breadcrumb-item active">{{ __('messages.tasks') }}</li>
+                                <li class="breadcrumb-item active">{{ __('messages.notifications') }}</li>
                             </ol>
                         </div>
                     </div>
@@ -69,9 +69,7 @@
                                     <div class="custom-accordion">
 
                                         <div class="mt-4">
-                                            <h5 class="position-relative mb-0"><a href=" " target="_blank"> </a> <a
-                                                    href="#taskcollapse " class="text-dark" data-bs-toggle="collapse"><i
-                                                        class="mdi mdi-chevron-down accordion-arrow"></i></a></h5>
+
                                             <div class="collapse show" id="taskcollapse">
                                                 <div class="table-responsive mt-3">
                                                     <table
@@ -83,6 +81,7 @@
                                                                 </th>
                                                                 <th scope="col">Sender</th>
                                                                 <th scope="col">Receiver</th>
+                                                                <th scope="col">Title</th>
                                                                 <th scope="col">Content</th>
                                                                 <th scope="col">Edit date</th>
                                                                 <th scope="col">Read</th>
@@ -107,6 +106,7 @@
                                                                     <td>
                                                                         <span class=""><?php echo $notification->user->name; ?></span>
                                                                     </td>
+
                                                                     <td>
                                                                         <?php 
                                                                             $count = 0;
@@ -134,7 +134,9 @@
 
                                                                         <!-- Add a button with onclick event -->
                                                                     </td>
-
+                                                                    <td>
+                                                                        <span class=""><?php echo $notification->title; ?></span>
+                                                                    </td>
                                                                     <script>
                                                                         function myFunction(id) {
                                                                             var receiver = $('span#receiver_' + id);

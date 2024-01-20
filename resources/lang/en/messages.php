@@ -10,14 +10,17 @@ return [
 	'due_date' => 'Due date',
 	'description' => 'Description',
 	'upload_file' => 'Upload file',
+	'dashboard' => 'Dashboard',
+	'login_error' => 'Wrong password or email',
+
+	'chat' => 'Chat',
 
 	'revenue' => 'Revenue',
 	'customer' => 'Customer',
 
-	'dashboard' => 'Dashboard',
-
 	'title' => 'Title',
 	'notifications' => 'Notifications',
+	'notification_create' => 'Create Notification',
 	'receiver' => 'Receiver',
 	'content' => 'Content',
 
@@ -38,6 +41,10 @@ return [
 	'task_parent_task' => 'Parent task',
 	'task_priority' => 'Priority',
 	'task_status' => 'Status',
+
+	'skills' => 'Skills',
+	'skill_add_new' => 'Add new skill',
+	'skill_edit' => 'Edit skill',
 
 	'user_member_list' => 'Members List',
 	'user_add_new' => 'Add new member',

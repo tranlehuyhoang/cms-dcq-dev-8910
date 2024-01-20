@@ -54,7 +54,6 @@
         </div>
     </div>
 @endif
-</div>
 <style>
     .container_pagination {
         width: 100%;

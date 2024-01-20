@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\Roles;
 use App\Models\User;
 use App\Models\UserHasNotification;
 use Illuminate\Http\Request;
@@ -14,19 +15,36 @@ class NotificationController extends Controller
 
 	public function index()
 	{
-		$perPage = 3; // Số lượng thông báo hiển thị trên mỗi trang
-		$notifications = Notification::with('user', 'userHasNotification.user')
-			->whereHas('userHasNotification.user', function ($query) {
-				$query->where('user_id', '>', 0);
-			})
-			->orderBy('created_at', 'desc')
-			->paginate($perPage);
+		$user = Auth::user();
+		$data['role']  = Roles::where('id', $user->role_id)->value('code');
+		$data['arRoles'] = Roles::whereIn('code', [User::ADMIN, User::MANAGER])->get()->pluck('name', 'id')->toArray();
+		// dd($data['role']);
+		if ($data['role'] == 'admin') {
+			$perPage = 3; // Số lượng thông báo hiển thị trên mỗi trang
+			$notifications = Notification::with('user', 'userHasNotification.user')
+				->whereHas('userHasNotification.user', function ($query) {
+					$query->where('user_id', '>', 0);
+				})
+				->orderBy('created_at', 'desc')
+				->paginate($perPage);
 
-		foreach ($notifications as $notification) {
-			foreach ($notification['userHasNotification'] as $userHasNotification) {
+			foreach ($notifications as $notification) {
+				foreach ($notification['userHasNotification'] as $userHasNotification) {
 
-				// dd($userHasNotification->user);
-				$user = User::find($userHasNotification->user->id);
+					// dd($userHasNotification->user);
+					$user = User::find($userHasNotification->user->id);
+
+					$avatarPath = '/assets/images/users/avatar-basic.jpg';
+					$avatar = $user->getFirstMedia('avatar');
+					$hasAvatar = $user->hasMedia('avatar');
+
+					if ($hasAvatar) {
+						$avatarPath = $avatar->getUrl();
+					}
+
+					$userHasNotification->userAvatar = $avatarPath;
+				}
+				$user = User::find($notification->sender_id);
 
 				$avatarPath = '/assets/images/users/avatar-basic.jpg';
 				$avatar = $user->getFirstMedia('avatar');
@@ -36,30 +54,23 @@ class NotificationController extends Controller
 					$avatarPath = $avatar->getUrl();
 				}
 
-				$userHasNotification->userAvatar = $avatarPath;
-			}
-			$user = User::find($notification->sender_id);
-
-			$avatarPath = '/assets/images/users/avatar-basic.jpg';
-			$avatar = $user->getFirstMedia('avatar');
-			$hasAvatar = $user->hasMedia('avatar');
-
-			if ($hasAvatar) {
-				$avatarPath = $avatar->getUrl();
+				$createdDate = $notification->created_at->setTimezone('Asia/Ho_Chi_Minh');
+				$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
+				$notification->senderAvatar = $avatarPath;
 			}
 
-			$createdDate = $notification->created_at->setTimezone('Asia/Ho_Chi_Minh');
-			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
-			$notification->senderAvatar = $avatarPath;
+			return view('notifications.index', compact('notifications'));
+		} else {
+
+			return redirect('dashboard');
 		}
-
-		return view('notifications.index', compact('notifications'));
 	}
 	public function create()
 	{
 		$user = Auth::user();
 
-		$data['users'] = User::where('id', '!=', $user->id)->get();
+		$data['users'] = User::get();
+
 
 		foreach ($data['users'] as $userData) {
 			$avatarPath = '/assets/images/users/avatar-basic.jpg';
@@ -80,10 +91,12 @@ class NotificationController extends Controller
 	{
 		$user = Auth::user();
 		$content = $request->input('content');
-
+		$title = $request->input('title');
+		dd($content);
 		$notification = Notification::create([
 			'sender_id' => $user->id,
-			'content' => $content
+			'content' => $content,
+			'title' => $title
 		]);
 
 		$selectedUsers = $request->input('selected_users');
@@ -102,18 +115,23 @@ class NotificationController extends Controller
 	}
 	public function getNewNotification()
 	{
+		$user = Auth::user();
+
 		$data['notifications'] = Notification::orderBy('created_at', 'desc')
 			->take(Notification::LIMIT)
 			->with('user')
-			->with('userHasNotification')
+			->with('userHasNotification.user')
+			->whereHas('userHasNotification', function ($query) use ($user) {
+				$query->where('user_id', $user->id);
+			})
 			->get();
 
 		foreach ($data['notifications'] as $notificationId => $notification) {
 			$createdDate = \Carbon\Carbon::parse($notification->created_at)->setTimezone('Asia/Ho_Chi_Minh');
 			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
-			// Các xử lý dữ liệu khác trong vòng lặp
+			// Other data processing inside the loop
 
-			// Xử lý avatar
+			// Process avatar
 			$user = $notification->user;
 			$avatar = $user->getFirstMedia('avatar');
 			$hasAvatar = $user->hasMedia('avatar');
@@ -122,7 +140,7 @@ class NotificationController extends Controller
 				$data['notifications'][$notificationId]['avatar'] = $avatar->getUrl();
 			} else {
 				$data['notifications'][$notificationId]['avatar'] = '/assets/images/users/avatar-basic.jpg';
-				// Xử lý tương ứng tại đây
+				// Handle accordingly here
 			}
 		}
 		$html = view('notifications.render_new_notification', ['notifications' => $data['notifications']])->render();

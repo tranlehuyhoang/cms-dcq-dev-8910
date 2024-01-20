@@ -12,14 +12,14 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">{{ __('messages.task_detail') }}</h4>
+                        <h4 class="page-title">{{ __('messages.notification_create') }}</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('messages.dcq') }}</a>
                                 </li>
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('task.index') }}">{{ __('messages.tasks') }}</a></li>
-                                <li class="breadcrumb-item active">{{ __('messages.task_detail') }}</li>
+                                        href="{{ route('task.index') }}">{{ __('messages.notifications') }}</a></li>
+                                <li class="breadcrumb-item active">{{ __('messages.notification_create') }}</li>
                             </ol>
                         </div>
                     </div>
@@ -35,31 +35,34 @@
                             <form method="post" id="task_form" accept-charset="UTF-8" enctype="multipart/form-data"
                                 action="{{ route('notifications.store') }}">
                                 @csrf
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">{{ __('messages.content') }}</label>
-                                        <input type="text" name="content" class="form-control" value="">
-                                    </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('messages.title') }}</label>
+                                    <input type="text" name="title" class="form-control" value="">
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">{{ __('messages.receiver') }}</label>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('messages.content') }}</label>
+                                    <textarea style="display: none;" name="contentsss"></textarea>
+                                    <div id="snow-editor" style="height: 300px;"></div>
+                                </div>
 
-                                        <div class="d-flex gap-1">
+                                <div class="mb-3">
 
-                                            <select class="js-example-basic-multiple" name="selected_users[]"
-                                                multiple="multiple">
-                                                @foreach ($users as $user)
-                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                                @endforeach
+                                    <label class="form-label">{{ __('messages.receiver') }}</label>
 
-                                            </select>
-                                            <script>
-                                                $(document).ready(function() {
-                                                    $('.js-example-basic-multiple').select2();
-                                                });
-                                            </script>
-                                        </div>
+                                    <div class="d-flex gap-1">
+
+                                        <select class="js-example-basic-multiple" name="selected_users[]"
+                                            multiple="multiple">
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+
+                                        </select>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('.js-example-basic-multiple').select2();
+                                            });
+                                        </script>
 
                                     </div>
                                 </div>

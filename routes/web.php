@@ -8,9 +8,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TaskCommentController;
+use App\Http\Controllers\ChatController;
+
 use App\Http\Controllers\UserHasNotificationController;
 use App\Http\Controllers\NotificationController;
 use App\Models\Notification;
+use App\Http\Controllers\SkillController;
+
 use App\Models\TaskComment;
 
 Route::get('/clear-cache', function () {
@@ -47,6 +51,16 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('tasks/get_child_tasks', [TaskController::class, 'get_child_tasks'])->name('task.get_child_tasks');
 	Route::post('tasks/upload_media', [TaskController::class, 'upload_media'])->name('task.upload_media');
 
+
+	//Kỹ năng
+	Route::middleware('admin')->group(function () {
+		Route::get('skill/add', [SkillController::class, 'add'])->name('skill.add');
+		Route::post('skill/update', [SkillController::class, 'update'])->name('skill.update');
+		Route::get('skill/{id}/edit', [SkillController::class, 'edit'])->name('skill.edit');
+		Route::get('skills', [SkillController::class, 'index'])->name('skill.index');
+		Route::get('skill/{id}/destroy', [SkillController::class, 'destroy'])->name('skill.destroy');
+	});
+
 	// Người dùng
 	Route::get('user/add', [UserController::class, 'add'])->name('user.add');
 	Route::post('user/update', [UserController::class, 'update'])->name('user.update');
@@ -60,6 +74,9 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('comment/pagination', [TaskCommentController::class, 'pagination'])->name('taskcomment.pagination');
 	Route::post('comment/getcommentlevel2', [TaskCommentController::class, 'getcommentlevel2'])->name('taskcomment.getcommentlevel2');
 	Route::post('comment/getcommentlevel3', [TaskCommentController::class, 'getcommentlevel3'])->name('taskcomment.getcommentlevel3');
+
+	// chat
+	Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
 
 	//Notification
 	Route::get('notification/new', [NotificationController::class, 'getNewNotification'])->name('notification.new');
