@@ -26,7 +26,6 @@
     <link href="/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-
     <!-- App css -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
@@ -42,7 +41,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -330,17 +329,17 @@
                             <?php
                             if($currentUser->getFirstMedia('avatar')){
                                 ?>
-                                <img src="<?php echo $currentUser->getFirstMedia('avatar')->getFullUrl() ?>" alt="user-image" class="rounded-circle">
-                                <?php
+                            <img src="<?php echo $currentUser->getFirstMedia('avatar')->getFullUrl(); ?>" alt="user-image" class="rounded-circle">
+                            <?php
                             } else {
                                 ?>
-                                <img src="/assets/images/users/avatar-basic.jpg" alt="user-image" class="rounded-circle">
-                                <?php
+                            <img src="/assets/images/users/avatar-basic.jpg" alt="user-image" class="rounded-circle">
+                            <?php
                             }
                             ?>
 
                             <span class="pro-user-name ms-1">
-                                <?php echo $currentUser->name ?> <i class="mdi mdi-chevron-down"></i>
+                                <?php echo $currentUser->name; ?> <i class="mdi mdi-chevron-down"></i>
 
                             </span>
                         </a>

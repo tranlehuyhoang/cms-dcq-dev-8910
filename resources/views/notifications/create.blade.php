@@ -41,8 +41,17 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('messages.content') }}</label>
-                                    <textarea style="display: none;" name="contentsss"></textarea>
-                                    <div id="snow-editor" style="height: 300px;"></div>
+                                    <textarea name="content" id="editor"></textarea>
+
+                                    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+                                    <script>
+                                        ClassicEditor
+                                            .create(document.querySelector('#editor'))
+                                            .catch(error => {
+                                                console.error(error);
+                                            });
+                                    </script>
+
                                 </div>
 
                                 <div class="mb-3">

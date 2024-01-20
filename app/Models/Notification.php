@@ -8,7 +8,7 @@ class Notification extends Model
 {
 	const LIMIT = 3;
 	protected $table = 'notifications';
-	protected $fillable = ['content', 'sender_id', 'title', 'created_at', 'updated_at'];
+	protected $fillable = ['sender_id', 'content', 'title', 'created_at', 'updated_at'];
 
 	// Các mối quan hệ
 	public function user()

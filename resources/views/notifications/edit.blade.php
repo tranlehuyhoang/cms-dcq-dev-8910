@@ -19,7 +19,7 @@
                                 </li>
                                 <li class="breadcrumb-item"><a
                                         href="{{ route('task.index') }}">{{ __('messages.tasks') }}</a></li>
-                                <li class="breadcrumb-item active">{{ __('messages.task_detail') }}</li>
+                                <li class="breadcrumb-item active">{{ __('messages.notification_edit') }}</li>
                             </ol>
                         </div>
                     </div>
@@ -36,48 +36,51 @@
                                 action="{{ route('notifications.update') }}">
                                 @csrf
                                 @method('PUT')
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">{{ __('messages.title') }}</label>
-                                        <input type="text" name="notification_id" hidden class="form-control"
-                                            value="{{ $notification->id }}">
-                                        <input type="text" name="title" class="form-control"
-                                            value="{{ $notification->title }}">
-                                    </div>
+                                <div class="  mb-3">
+                                    <label class="form-label">{{ __('messages.title') }}</label>
+                                    <input type="text" name="notification_id" hidden class="form-control"
+                                        value="{{ $notification->id }}">
+                                    <input type="text" name="title" class="form-control"
+                                        value="{{ $notification->title }}">
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">{{ __('messages.content') }}</label>
-                                        <input type="text" name="content" class="form-control"
-                                            value="{{ $notification->content }}">
-                                    </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('messages.content') }}</label>
+                                    <textarea name="content" id="editor">  {{ $notification->content }}</textarea>
+
+                                    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+                                    <script>
+                                        ClassicEditor
+                                            .create(document.querySelector('#editor'))
+                                            .catch(error => {
+                                                console.error(error);
+                                            });
+                                    </script>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">{{ __('messages.receiver') }}</label>
 
-                                        <div class="d-flex gap-1">
+                                <div class="  mb-3">
+                                    <label class="form-label">{{ __('messages.receiver') }}</label>
 
-                                            <select class="js-example-basic-multiple" name="selected_users[]"
-                                                multiple="multiple">
-                                                @foreach ($notification->userHasNotification as $userHas)
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}"
-                                                            {{ $user->id == $userHas->user->id ? 'selected' : '' }}>
-                                                            {{ $user->name }}
-                                                        </option>
-                                                    @endforeach
+                                    <div class="d-flex gap-1">
+
+                                        <select class="js-example-basic-multiple" name="selected_users[]"
+                                            multiple="multiple">
+                                            @foreach ($notification->userHasNotification as $userHas)
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}"
+                                                        {{ $user->id == $userHas->user->id ? 'selected' : '' }}>
+                                                        {{ $user->name }}
+                                                    </option>
                                                 @endforeach
+                                            @endforeach
 
-                                            </select>
-                                            <script>
-                                                $(document).ready(function() {
-                                                    $('.js-example-basic-multiple').select2();
-                                                });
-                                            </script>
-                                        </div>
-
+                                        </select>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('.js-example-basic-multiple').select2();
+                                            });
+                                        </script>
                                     </div>
+
                                 </div>
 
                                 <div class="mb-3 d-flex justify-content-end">

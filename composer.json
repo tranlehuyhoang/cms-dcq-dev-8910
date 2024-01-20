@@ -9,8 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "ckeditor/ckeditor": "*",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/pagination": "*",
+        "jxlwqq/quill": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",

@@ -33,9 +33,7 @@
                                     <!-- cta -->
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <a href="{{ route('notifications.create', 0) }}"
-                                                class="btn btn-primary waves-effect waves-light"><i
-                                                    class='fe-plus me-1'></i>Add New</a>
+
                                         </div>
                                         <div class="col-sm-9">
                                             <div class="float-sm-end mt-3 mt-sm-0">
@@ -80,12 +78,10 @@
                                                                     ID
                                                                 </th>
                                                                 <th scope="col">Sender</th>
-                                                                <th scope="col">Receiver</th>
                                                                 <th scope="col">Title</th>
                                                                 <th scope="col">Content</th>
                                                                 <th scope="col">Edit date</th>
                                                                 <th scope="col">Read</th>
-                                                                <th scope="col" style="width: 85px;">Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -107,50 +103,11 @@
                                                                         <span class=""><?php echo $notification->user->name; ?></span>
                                                                     </td>
 
-                                                                    <td>
-                                                                        <?php 
-                                                                            $count = 0;
-                                                                            foreach ($notification->userHasNotification as $userNotification):
-                                                                                $count++;
-                                                                        ?>
-                                                                        <span class="badge badge-soft-success "
-                                                                            style="display:<?php echo $count > 3 ? 'none' : ''; ?>"
-                                                                            id="<?php echo $count > 3 ? 'receiver_' . $notification->id : ''; ?>">
-                                                                            <img src="<?php echo $userNotification->userAvatar; ?>" alt="image"
-                                                                                class="avatar-sm img-thumbnail rounded-circle"
-                                                                                title="Houston Fritz"
-                                                                                style="width: 20px; height: 20px; padding: 0px" />
-                                                                            <?php echo $userNotification->user->name; ?>
-                                                                        </span>
 
-
-
-                                                                        <?php endforeach; ?>
-
-                                                                        <?php if ($count >= 3): ?>
-                                                                        <i class="fa fa-arrow-right"
-                                                                            onclick="myFunction(<?php echo $notification->id; ?>)"></i>
-                                                                        <?php endif; ?>
-
-                                                                        <!-- Add a button with onclick event -->
-                                                                    </td>
                                                                     <td>
                                                                         <span class=""><?php echo $notification->title; ?></span>
                                                                     </td>
-                                                                    <script>
-                                                                        function myFunction(id) {
-                                                                            var receiver = $('span#receiver_' + id);
-                                                                            var icon = receiver.find('i.fa');
 
-                                                                            if (receiver.is(':visible')) {
-                                                                                receiver.hide();
-                                                                                icon.removeClass('fa-eye').addClass('fa-eye-slash');
-                                                                            } else {
-                                                                                receiver.show();
-                                                                                icon.removeClass('fa-eye-slash').addClass('fa-eye');
-                                                                            }
-                                                                        }
-                                                                    </script>
                                                                     <td>
                                                                         <span class=""><?php echo $notification->content; ?></span>
                                                                     </td>
@@ -170,42 +127,14 @@
                                                                     </td>
 
 
-                                                                    <td>
-                                                                        <ul class="list-inline table-action m-0">
-                                                                            <li class="list-inline-item">
-                                                                                <a href=" " class="action-icon px-1">
-                                                                                    <i
-                                                                                        class="mdi mdi-square-edit-outline"></i></a>
-                                                                            </li>
-                                                                            <li class="list-inline-item">
-                                                                                <div class="dropdown">
-                                                                                    <a class="action-icon px-1 dropdown-toggle"
-                                                                                        href="#"
-                                                                                        data-bs-toggle="dropdown"
-                                                                                        aria-haspopup="true"
-                                                                                        aria-expanded="false">
-                                                                                        <i
-                                                                                            class="mdi mdi-dots-vertical"></i>
-                                                                                    </a>
 
-                                                                                    <div
-                                                                                        class="dropdown-menu dropdown-menu-end">
-
-                                                                                        <a class="dropdown-item"
-                                                                                            href="{{ route('notifications.edit', ['id' => $notification->id]) }}">Edit</a>
-                                                                                        <a class="dropdown-item"
-                                                                                            href="{{ route('notifications.delete', ['id' => $notification->id]) }}">Delete</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
                                                     </table>
                                                     <div class="pagination">
                                                         {{ $notifications->appends(request()->except('page'))->links() }}
+
                                                     </div>
                                                 </div>
                                             </div>

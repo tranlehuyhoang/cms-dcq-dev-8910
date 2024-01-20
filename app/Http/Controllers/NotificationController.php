@@ -13,44 +13,50 @@ use Illuminate\Support\Facades\Auth;
 class NotificationController extends Controller
 {
 
-	public function index()
+	public function index(Request $request)
 	{
 		$user = Auth::user();
 		$data['role']  = Roles::where('id', $user->role_id)->value('code');
 		$data['arRoles'] = Roles::whereIn('code', [User::ADMIN, User::MANAGER])->get()->pluck('name', 'id')->toArray();
-		// dd($data['role']);
+
 		if ($data['role'] == 'admin') {
-			$perPage = 3; // Số lượng thông báo hiển thị trên mỗi trang
-			$notifications = Notification::with('user', 'userHasNotification.user')
+			$perPage = 3;
+			$query = Notification::with('user', 'userHasNotification.user')
 				->whereHas('userHasNotification.user', function ($query) {
 					$query->where('user_id', '>', 0);
 				})
-				->orderBy('created_at', 'desc')
-				->paginate($perPage);
+				->orderBy('created_at', 'desc');
+
+			$search = $request->input('search');
+			if ($search) {
+				$query->where('title', 'like', '%' . $search . '%');
+			}
+
+			$notifications = $query->paginate($perPage);
 
 			foreach ($notifications as $notification) {
-				foreach ($notification['userHasNotification'] as $userHasNotification) {
-
-					// dd($userHasNotification->user);
+				$userHasNotifications = $notification->userHasNotification;
+				foreach ($userHasNotifications as $userHasNotification) {
 					$user = User::find($userHasNotification->user->id);
 
 					$avatarPath = '/assets/images/users/avatar-basic.jpg';
 					$avatar = $user->getFirstMedia('avatar');
 					$hasAvatar = $user->hasMedia('avatar');
 
-					if ($hasAvatar) {
+					if ($hasAvatar && $avatar) {
 						$avatarPath = $avatar->getUrl();
 					}
 
 					$userHasNotification->userAvatar = $avatarPath;
 				}
-				$user = User::find($notification->sender_id);
+
+				$sender = User::find($notification->sender_id);
 
 				$avatarPath = '/assets/images/users/avatar-basic.jpg';
-				$avatar = $user->getFirstMedia('avatar');
-				$hasAvatar = $user->hasMedia('avatar');
+				$avatar = $sender->getFirstMedia('avatar');
+				$hasAvatar = $sender->hasMedia('avatar');
 
-				if ($hasAvatar) {
+				if ($hasAvatar && $avatar) {
 					$avatarPath = $avatar->getUrl();
 				}
 
@@ -61,8 +67,37 @@ class NotificationController extends Controller
 
 			return view('notifications.index', compact('notifications'));
 		} else {
+			$perPage = 3;
+			$query = Notification::with('user', 'userHasNotification.user')
+				->whereHas('userHasNotification.user', function ($query) use ($user) {
+					$query->where('user_id', '=', $user->id);
+				})
+				->orderBy('created_at', 'desc');
 
-			return redirect('dashboard');
+			$search = $request->input('search');
+			if ($search) {
+				$query->where('title', 'like', '%' . $search . '%');
+			}
+
+			$notifications = $query->paginate($perPage);
+
+			foreach ($notifications as $notification) {
+				$sender = User::find($notification->sender_id);
+
+				$avatarPath = '/assets/images/users/avatar-basic.jpg';
+				$avatar = $sender->getFirstMedia('avatar');
+				$hasAvatar = $sender->hasMedia('avatar');
+
+				if ($hasAvatar && $avatar) {
+					$avatarPath = $avatar->getUrl();
+				}
+
+				$createdDate = $notification->created_at->setTimezone('Asia/Ho_Chi_Minh');
+				$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
+				$notification->senderAvatar = $avatarPath;
+			}
+
+			return view('notifications.index_user', compact('notifications'));
 		}
 	}
 	public function create()
@@ -92,14 +127,14 @@ class NotificationController extends Controller
 		$user = Auth::user();
 		$content = $request->input('content');
 		$title = $request->input('title');
-		dd($content);
+		// dd($content);
 		$notification = Notification::create([
 			'sender_id' => $user->id,
 			'content' => $content,
 			'title' => $title
 		]);
 
-		$selectedUsers = $request->input('selected_users');
+		$selectedUsers = $request->input('selected_users', []);
 
 		foreach ($selectedUsers as $selectedUser) {
 			UserHasNotification::create([
@@ -108,6 +143,7 @@ class NotificationController extends Controller
 				'mark_read' => 0
 			]);
 		}
+
 		return redirect()->route('notifications');
 		// Additional code if needed
 
