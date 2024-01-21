@@ -63,7 +63,8 @@
                                         <select class="js-example-basic-multiple" name="selected_users[]"
                                             multiple="multiple">
                                             @foreach ($users as $user)
-                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                <option class="badge badge-soft-success " value="{{ $user->id }}">
+                                                    {{ $user->name }}</option>
                                             @endforeach
 
                                         </select>
@@ -72,7 +73,13 @@
                                                 $('.js-example-basic-multiple').select2();
                                             });
                                         </script>
-
+                                        <style>
+                                            .select2-selection__choice {
+                                                color: #1abc9c !important;
+                                                background-color: rgba(26, 188, 156, .18) !important;
+                                                border: 0px !important;
+                                            }
+                                        </style>
                                     </div>
                                 </div>
 

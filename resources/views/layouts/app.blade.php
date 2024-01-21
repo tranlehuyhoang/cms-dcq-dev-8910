@@ -26,6 +26,7 @@
     <link href="/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+
     <!-- App css -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
@@ -251,7 +252,7 @@
                         <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown"
                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="fe-bell noti-icon"></i>
-                            <span class="badge bg-danger rounded-circle noti-icon-badge">5</span>
+                            <span class="badge bg-danger rounded-circle noti-icon-badge unreadCount">0</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-lg">
 
@@ -314,6 +315,7 @@
                                     console.log('first')
                                     // Hiển thị HTML trả về
                                     $('#noti-scroll').html(response.html);
+                                    $('.unreadCount').html(response.unreadCount);
                                 },
                                 error: function(xhr, status, error) {
                                     console.log(error);

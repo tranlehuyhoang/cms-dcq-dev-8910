@@ -162,12 +162,20 @@ class NotificationController extends Controller
 			})
 			->get();
 
+		$unreadCount = Notification::whereHas('userHasNotification', function ($query) use ($user) {
+			$query->where('user_id', $user->id)
+				->where('mark_read', 0);
+		})->count();
+
+		if ($unreadCount > 5) {
+			$unreadCount = '5+';
+		}
 		foreach ($data['notifications'] as $notificationId => $notification) {
 			$createdDate = \Carbon\Carbon::parse($notification->created_at)->setTimezone('Asia/Ho_Chi_Minh');
 			$notification->diffForHumansInVietnam = $createdDate->diffForHumans();
-			// Other data processing inside the loop
+			// Xử lý dữ liệu khác trong vòng lặp
 
-			// Process avatar
+			// Xử lý avatar
 			$user = $notification->user;
 			$avatar = $user->getFirstMedia('avatar');
 			$hasAvatar = $user->hasMedia('avatar');
@@ -176,27 +184,45 @@ class NotificationController extends Controller
 				$data['notifications'][$notificationId]['avatar'] = $avatar->getUrl();
 			} else {
 				$data['notifications'][$notificationId]['avatar'] = '/assets/images/users/avatar-basic.jpg';
-				// Handle accordingly here
+				// Xử lý tương ứng ở đây
 			}
 		}
-		$html = view('notifications.render_new_notification', ['notifications' => $data['notifications']])->render();
-		// dd($html);
 
-		return response()->json(['html' => $html], 200);
+		$html = view('notifications.render_new_notification', ['notifications' => $data['notifications']])->render();
+
+		return response()->json(['html' => $html, 'unreadCount' => $unreadCount], 200);
 	}
 	public function edit($id)
 	{
-		$notification = Notification::with('user', 'userHasNotification.user')
-			->where('id', $id)
-			->whereHas('userHasNotification.user', function ($query) {
-				$query->where('user_id', '>', 0);
-			})
-			->orderBy('created_at', 'desc')
-			->first(); // Retrieve the notification as a single instance
+		$user = Auth::user();
+		$data['role']  = Roles::where('id', $user->role_id)->value('code');
+		$data['arRoles'] = Roles::whereIn('code', [User::ADMIN, User::MANAGER])->get()->pluck('name', 'id')->toArray();
 
-		$users = User::all(); // Retrieve all users
+		if ($data['role'] == 'admin') {
+			$notification = Notification::with('user', 'userHasNotification.user')
+				->where('id', $id)
+				->whereHas('userHasNotification.user', function ($query) {
+					$query->where('user_id', '>', 0);
+				})
+				->orderBy('created_at', 'desc')
+				->first(); // Retrieve the notification as a single instance
 
-		return view('notifications.edit', compact('notification', 'id', 'users'));
+			$users = User::all(); // Retrieve all users
+
+			return view('notifications.edit', compact('notification', 'id', 'users'));
+		} else {
+			$notification = Notification::with('user', 'userHasNotification.user')
+				->where('id', $id)
+				->whereHas('userHasNotification.user', function ($query) {
+					$query->where('user_id', '>', 0);
+				})
+				->orderBy('created_at', 'desc')
+				->first(); // Retrieve the notification as a single instance
+
+			$users = User::all(); // Retrieve all users
+
+			return view('notifications.edit_user', compact('notification', 'id', 'users'));
+		}
 	}
 	public function update(Request $request)
 	{

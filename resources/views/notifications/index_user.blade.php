@@ -74,9 +74,7 @@
                                                         class="table table-centered table-nowrap table-borderless table-sm">
                                                         <thead class="table-light">
                                                             <tr class="">
-                                                                <th scope="col">
-                                                                    ID
-                                                                </th>
+
                                                                 <th scope="col">Sender</th>
                                                                 <th scope="col">Title</th>
                                                                 <th scope="col">Content</th>
@@ -87,16 +85,6 @@
                                                         <tbody>
                                                             @foreach ($notifications as $notification)
                                                                 <tr id=" " class="child_tasks_ ">
-                                                                    <td>
-
-                                                                        <label class="ps-1 label-task form-check-label  "
-                                                                            for="tasktodayCheck01">
-                                                                            <span class="task-arrow">
-
-                                                                            </span>
-                                                                            #<?php echo $notification->id; ?>
-                                                                        </label>
-                                                                    </td>
 
 
                                                                     <td>
@@ -105,11 +93,24 @@
 
 
                                                                     <td>
-                                                                        <span class=""><?php echo $notification->title; ?></span>
+                                                                        <span class="">
+                                                                            <a
+                                                                                href="{{ route('notifications.edit', ['id' => $notification->id]) }}">
+                                                                                <?php echo strlen($notification->title) > 10 ? substr($notification->title, 0, 10) . '...' : $notification->title; ?>
+                                                                            </a>
+
+                                                                        </span>
+
                                                                     </td>
 
                                                                     <td>
-                                                                        <span class=""><?php echo $notification->content; ?></span>
+                                                                        <span class="">
+                                                                            <?php
+                                                                            $content = strip_tags($notification->content);
+                                                                            $displayContent = strlen($content) > 10 ? substr($content, 0, 10) . '...' : $content;
+                                                                            echo $displayContent;
+                                                                            ?>
+                                                                        </span>
                                                                     </td>
                                                                     <td>
                                                                         <span class=""><?php echo $notification->diffForHumansInVietnam; ?></span>

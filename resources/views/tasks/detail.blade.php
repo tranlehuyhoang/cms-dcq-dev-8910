@@ -325,7 +325,7 @@
                                                                 <i class="mdi mdi-dots-vertical"></i>
                                                             </a>
 
-                                                            <div class="dropdown-menu dropdown-menu-end" hidden>
+                                                            <div class="dropdown-menu dropdown-menu-end">
                                                                 <a class="dropdown-item" href="#">Action</a>
                                                                 <a class="dropdown-item" href="#">Another action</a>
                                                                 <a class="dropdown-item" href="#">Something else
@@ -579,10 +579,10 @@
                                                     $('#reply_id').val('0');
 
                                                     if (reply_id == 0) {
-                                                        $('.clerfix').after(response.html);
+                                                        $('.clerfix').html(response.html);
 
                                                     } else {
-                                                        $('#child_' + reply_id).after(response.html);
+                                                        $('#child_' + reply_id).html(response.html);
 
                                                     }
                                                     // Tạo HTML cho comment mới

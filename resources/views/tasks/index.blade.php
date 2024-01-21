@@ -180,8 +180,8 @@
                                                                                     <i class="mdi mdi-dots-vertical"></i>
                                                                                 </a>
 
-                                                                                <div class="dropdown-menu dropdown-menu-end"
-                                                                                    hidden>
+                                                                                <div
+                                                                                    class="dropdown-menu dropdown-menu-end">
                                                                                     <a class="dropdown-item"
                                                                                         href="#">Action</a>
                                                                                     <a class="dropdown-item"

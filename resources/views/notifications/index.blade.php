@@ -76,9 +76,7 @@
                                                         class="table table-centered table-nowrap table-borderless table-sm">
                                                         <thead class="table-light">
                                                             <tr class="">
-                                                                <th scope="col">
-                                                                    ID
-                                                                </th>
+
                                                                 <th scope="col">Sender</th>
                                                                 <th scope="col">Receiver</th>
                                                                 <th scope="col">Title</th>
@@ -91,16 +89,6 @@
                                                         <tbody>
                                                             @foreach ($notifications as $notification)
                                                                 <tr id=" " class="child_tasks_ ">
-                                                                    <td>
-
-                                                                        <label class="ps-1 label-task form-check-label  "
-                                                                            for="tasktodayCheck01">
-                                                                            <span class="task-arrow">
-
-                                                                            </span>
-                                                                            #<?php echo $notification->id; ?>
-                                                                        </label>
-                                                                    </td>
 
 
                                                                     <td>
@@ -109,33 +97,26 @@
 
                                                                     <td>
                                                                         <?php 
-                                                                            $count = 0;
-                                                                            foreach ($notification->userHasNotification as $userNotification):
-                                                                                $count++;
+                                                                        foreach ($notification->userHasNotification as $userNotification):
                                                                         ?>
-                                                                        <span class="badge badge-soft-success "
-                                                                            style="display:<?php echo $count > 3 ? 'none' : ''; ?>"
-                                                                            id="<?php echo $count > 3 ? 'receiver_' . $notification->id : ''; ?>">
+                                                                        <span class="badge badge-soft-success"
+                                                                            style="display:<?php echo count($notification->userHasNotification) > 3 ? 'none' : ''; ?>"
+                                                                            id="<?php echo count($notification->userHasNotification) > 3 ? 'receiver_' . $notification->id : ''; ?>">
                                                                             <img src="<?php echo $userNotification->userAvatar; ?>" alt="image"
                                                                                 class="avatar-sm img-thumbnail rounded-circle"
                                                                                 title="Houston Fritz"
                                                                                 style="width: 20px; height: 20px; padding: 0px" />
                                                                             <?php echo $userNotification->user->name; ?>
                                                                         </span>
-
-
-
                                                                         <?php endforeach; ?>
 
-                                                                        <?php if ($count >= 3): ?>
+                                                                        <?php if (count($notification->userHasNotification) > 3): ?>
                                                                         <i class="fa fa-arrow-right"
                                                                             onclick="myFunction(<?php echo $notification->id; ?>)"></i>
                                                                         <?php endif; ?>
-
-                                                                        <!-- Add a button with onclick event -->
                                                                     </td>
                                                                     <td>
-                                                                        <span class=""><?php echo $notification->title; ?></span>
+                                                                        <span class=""><?php echo strlen($notification->title) > 10 ? substr($notification->title, 0, 10) . '...' : $notification->title; ?></span>
                                                                     </td>
                                                                     <script>
                                                                         function myFunction(id) {
@@ -152,7 +133,14 @@
                                                                         }
                                                                     </script>
                                                                     <td>
-                                                                        <span class=""><?php echo $notification->content; ?></span>
+                                                                        <span class="">
+                                                                            <?php
+                                                                            $content = strip_tags($notification->content);
+                                                                            $displayContent = strlen($content) > 10 ? substr($content, 0, 10) . '...' : $content;
+                                                                            echo $displayContent;
+                                                                            ?>
+                                                                        </span>
+
                                                                     </td>
                                                                     <td>
                                                                         <span class=""><?php echo $notification->diffForHumansInVietnam; ?></span>
@@ -173,14 +161,15 @@
                                                                     <td>
                                                                         <ul class="list-inline table-action m-0">
                                                                             <li class="list-inline-item">
-                                                                                <a href=" " class="action-icon px-1">
+                                                                                <a href="{{ route('notifications.edit', ['id' => $notification->id]) }}"
+                                                                                    class="action-icon px-1">
                                                                                     <i
                                                                                         class="mdi mdi-square-edit-outline"></i></a>
                                                                             </li>
                                                                             <li class="list-inline-item">
                                                                                 <div class="dropdown">
                                                                                     <a class="action-icon px-1 dropdown-toggle"
-                                                                                        href="#"
+                                                                                        href=""
                                                                                         data-bs-toggle="dropdown"
                                                                                         aria-haspopup="true"
                                                                                         aria-expanded="false">

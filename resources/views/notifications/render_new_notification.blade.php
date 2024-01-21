@@ -11,8 +11,12 @@
             <div class="notify-icon bg-soft-primary text-primary">
                 <img src="{{ $value['avatar'] }}" class="img-fluid rounded-circle" alt="" />
             </div>
-            <p class="notify-details">{{ $value['title'] }}
-                <small class="text-muted">{{ $value['content'] }}</small>
+            <p class="notify-details">
+                {{ Str::limit($value['title'], 20, '...') }}
+                <small class="text-muted">
+                    {{-- {{ Str::limit($value['content'], 20, '...') }} --}}
+
+                </small>
                 <small class="text-muted">{{ $value['diffForHumansInVietnam'] }}</small>
 
             </p>

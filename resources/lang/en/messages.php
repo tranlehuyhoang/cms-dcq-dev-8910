@@ -20,9 +20,8 @@ return [
 
 	'title' => 'Title',
 	'notifications' => 'Notifications',
-	'notification_create' => 'Create Notification',
 	'notification_edit' => 'Edit Notification',
-
+	'notification_create' => 'Create Notification',
 	'receiver' => 'Receiver',
 	'content' => 'Content',
 

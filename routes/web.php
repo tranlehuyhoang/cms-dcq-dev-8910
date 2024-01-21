@@ -77,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
 
 	// chat
 	Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+	Route::post('chat/create', [ChatController::class, 'store'])->name('chat.add');
+	Route::get('chat/room/{id}', [ChatController::class, 'getChatsInRoom'])->name('chat.room');
 
 	//Notification
 	Route::get('notification/new', [NotificationController::class, 'getNewNotification'])->name('notification.new');

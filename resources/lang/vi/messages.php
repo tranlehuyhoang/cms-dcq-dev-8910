@@ -44,6 +44,8 @@ return [
 	'skills' => 'Kỹ năng',
 	'skill_add_new' => 'Thêm mới kỹ năng',
 	'skill_edit' => 'Sửa kỹ năng',
+	'notification_edit' => 'Sửa thông báo',
+	'notification_create' => 'Thêm mới thông báo',
 
 	'user_member_list' => 'Nhân sự',
 	'user_add_new' => 'Thêm nhân sự',
