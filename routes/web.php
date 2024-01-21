@@ -89,4 +89,5 @@ Route::middleware(['auth'])->group(function () {
 	Route::put('notification/update', [NotificationController::class, 'update'])->name('notifications.update');
 	Route::post('notification/store', [NotificationController::class, 'store'])->name('notifications.store');
 	Route::get('notification/delete/{id}', [NotificationController::class, 'delete'])->name('notifications.delete');
+	Route::post('notification/report_task_user', [NotificationController::class, 'report_task_user'])->name('notifications.report_task');
 });

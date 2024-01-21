@@ -2,8 +2,10 @@
 @section('title')
     {{ __('messages.tasks') }}
 @endsection
+
 @section('content')
     <div class="content">
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -158,23 +160,55 @@
                                                                         <?php echo $value['status']; ?>
                                                                     </span>
                                                                 </td>
-                                                                <td>
-                                                                    <ul class="list-inline table-action m-0">
-                                                                        <li class="list-inline-item">
-                                                                            <a href="{{ route('task.edit', $value['id']) }}"
-                                                                                class="action-icon px-1"> <i
-                                                                                    class="mdi mdi-square-edit-outline"></i></a>
-                                                                        </li>
 
-                                                                    </ul>
+                                                                <td>
+                                                                    @if ($role == 'admin')
+                                                                        {{-- Code to be executed if the role is not 'admin' --}}
+                                                                    @else
+                                                                        <ul class="list-inline table-action m-0">
+                                                                            <li class="list-inline-item">
+                                                                                <a href="{{ route('task.edit', $value['id']) }}"
+                                                                                    class="action-icon px-1">
+                                                                                    <i
+                                                                                        class="mdi mdi-square-edit-outline"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li class="list-inline-item">
+                                                                                <div class="dropdown">
+                                                                                    <a class="action-icon px-1 dropdown-toggle"
+                                                                                        href="#"
+                                                                                        data-bs-toggle="dropdown"
+                                                                                        aria-haspopup="true"
+                                                                                        aria-expanded="false">
+                                                                                        <i
+                                                                                            class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div
+                                                                                        class="dropdown-menu dropdown-menu-end">
+                                                                                        <a type="button"
+                                                                                            class="dropdown-item"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#staticBackdrop_{{ $value['id'] }}">Report</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    @endif
                                                                 </td>
+
                                                             </tr>
+
                                                             <?php
                                                                 }
                                                                 ?>
 
                                                         </tbody>
+
+
+                                                        <!-- Modal -->
+
                                                     </table>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -182,7 +216,62 @@
                                         }
                                         ?>
                                     </div>
+                                    <?php if ($role != 'admin'): ?>
+                                    <?php foreach ($arTasks_child as $key => $value): ?>
+                                    <div class="modal fade" id="staticBackdrop_{{ $value['id'] }}"
+                                        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="post" id="task_form" accept-charset="UTF-8"
+                                                    enctype="multipart/form-data"
+                                                    action="{{ route('notifications.report_task') }}">
+                                                    @csrf
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="staticBackdropLabel">Report task id:
+                                                            {{ $value['id'] }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
 
+                                                        <input type="text" name="task_id" value="{{ $value['id'] }}"
+                                                            hidden class="form-control" />
+                                                        <div class="mb-3">
+                                                            <label class="form-label">{{ __('messages.title') }}</label>
+                                                            <input type="text" name="title" class="form-control"
+                                                                value="">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">{{ __('messages.content') }}</label>
+                                                            <textarea name="content" id="editor_{{ $value['id'] }}"></textarea>
+
+                                                            <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+                                                            <script>
+                                                                ClassicEditor
+                                                                    .create(document.querySelector('#editor_{{ $value['id'] }}'))
+                                                                    .catch(error => {
+                                                                        console.error(error);
+                                                                    });
+                                                            </script>
+
+
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Send</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>
                                     <script>
                                         showChildTasks = function(element, id) {
 
@@ -247,5 +336,6 @@
             </div>
         </div>
     </footer>
+
     <!-- end Footer -->
 @endsection

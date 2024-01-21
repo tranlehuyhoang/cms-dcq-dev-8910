@@ -56,6 +56,7 @@ class TaskController extends BaseController
 				}
 			}
 		} else {
+
 			$data['arTasks'] = Tasks::with('tasksAssignTo')
 				->with('tasksCreatedBy')
 				->with('tasksApprovedBy')
@@ -96,6 +97,16 @@ class TaskController extends BaseController
 					// Xử lý tương ứng tại đây
 				}
 			}
+			$data['arTasks_child'] = Tasks::with('tasksAssignTo')
+				->with('tasksCreatedBy')
+				->with('tasksApprovedBy')
+				->get()
+				->keyBy('id')
+				->toArray();
+
+			// dd($data['arTasks']);
+
+
 			// dd($data['arTasks_user']);
 		}
 		// dd($data['arTasks']);
@@ -282,6 +293,9 @@ class TaskController extends BaseController
 
 	public function get_child_tasks(Request $request)
 	{
+		$user = Auth::user();
+		$data['role']  = Roles::where('id', $user->role_id)->value('code');
+		$data['arRoles'] = Roles::whereIn('code', [User::ADMIN, User::MANAGER])->get()->pluck('name', 'id')->toArray();
 		$id = $request->input('id');
 		$arTasks = Tasks::with('tasksAssignTo')
 			->with('tasksCreatedBy')
@@ -292,6 +306,7 @@ class TaskController extends BaseController
 			->toArray();
 
 		foreach ($arTasks as $taskId => $task) {
+
 			// Check if there are child tasks with parent_id = $taskId
 			$hasChildren = Tasks::where('parent_id', $taskId)->exists();
 
@@ -329,7 +344,7 @@ class TaskController extends BaseController
 			}
 		}
 
-		$html = view('tasks.render_child_tasks', ['arTasks' => $arTasks])->render();
+		$html = view('tasks.render_child_tasks', ['arTasks' => $arTasks, 'role' => $data['role']])->render();
 
 		return response()->json(['html' => $html], 200);
 	}

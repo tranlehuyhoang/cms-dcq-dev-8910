@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Models\Roles;
+use App\Models\Tasks;
 use App\Models\User;
 use App\Models\UserHasNotification;
 use Illuminate\Http\Request;
@@ -147,6 +148,36 @@ class NotificationController extends Controller
 			]);
 		}
 
+		return redirect()->route('notifications');
+		// Additional code if needed
+
+		// Return a response or redirect
+	}
+
+	public function report_task_user(Request $request)
+	{
+		$user = Auth::user();
+		$data['role']  = Roles::where('id', $user->role_id)->value('code');
+		$task_id = $request->input('task_id');
+		$title = $request->input('title');
+		$content = $request->input('content');
+
+		$notification = Notification::create([
+			'sender_id' => $user->id,
+			'title' => $title,
+			'content' => $content
+		]);
+
+		// Lấy ID của người dùng được phê duyệt từ task
+		$approvedUserId = Tasks::where('id', $task_id)->value('approved_by');
+
+		if ($approvedUserId) {
+			UserHasNotification::create([
+				'notification_id' => $notification->id,
+				'user_id' => $approvedUserId,
+				'mark_read' => 0
+			]);
+		}
 		return redirect()->route('notifications');
 		// Additional code if needed
 

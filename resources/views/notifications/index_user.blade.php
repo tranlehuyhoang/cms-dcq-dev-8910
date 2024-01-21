@@ -86,7 +86,6 @@
                                                             @foreach ($notifications as $notification)
                                                                 <tr id=" " class="child_tasks_ ">
 
-
                                                                     <td>
                                                                         <span class=""><?php echo $notification->user->name; ?></span>
                                                                     </td>

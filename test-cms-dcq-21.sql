@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3309
--- Thời gian đã tạo: Th1 20, 2024 lúc 03:18 AM
+-- Thời gian đã tạo: Th1 21, 2024 lúc 10:19 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.2.4
 
@@ -20,6 +20,74 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `test-cms-dcq-3`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `chat_missions`
+--
+
+CREATE TABLE `chat_missions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sender_id` bigint(20) UNSIGNED NOT NULL,
+  `chat_id` bigint(20) UNSIGNED NOT NULL,
+  `note` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `chat_missions`
+--
+
+INSERT INTO `chat_missions` (`id`, `sender_id`, `chat_id`, `note`, `created_at`, `updated_at`) VALUES
+(1, 2, 3, 'fawefawef', '2024-01-20 03:24:26', NULL),
+(2, 3, 4, 'fawef', '2024-01-20 04:09:12', NULL),
+(3, 2, 3, 'fawefawef', '2024-01-20 03:24:39', NULL),
+(4, 4, 4, 'fawef', '2024-01-13 04:09:15', NULL),
+(5, 4, 4, 'fawef', '2024-01-20 04:09:18', NULL),
+(6, 2, 4, 'fasf', '2024-01-19 20:57:45', '2024-01-19 20:57:45'),
+(7, 2, 4, 'xin chaof', '2024-01-19 20:57:52', '2024-01-19 20:57:52'),
+(8, 2, 7, 'xzczcv', '2024-01-19 20:57:58', '2024-01-19 20:57:58'),
+(9, 2, 3, 'faff', '2024-01-19 20:58:05', '2024-01-19 20:58:05'),
+(10, 2, 8, 'Chào bạn', '2024-01-19 21:03:26', '2024-01-19 21:03:26'),
+(11, 2, 4, 'faf', '2024-01-19 21:07:19', '2024-01-19 21:07:19'),
+(12, 2, 4, 'vzv', '2024-01-19 21:07:23', '2024-01-19 21:07:23'),
+(13, 2, 4, 'fff', '2024-01-19 21:17:49', '2024-01-19 21:17:49'),
+(14, 2, 4, 'vvv', '2024-01-19 21:23:13', '2024-01-19 21:23:13'),
+(15, 2, 3, 'zx', '2024-01-19 21:23:22', '2024-01-19 21:23:22'),
+(16, 2, 4, 'ádwqd', '2024-01-19 21:25:23', '2024-01-19 21:25:23'),
+(17, 2, 3, 'xzczxc', '2024-01-19 21:25:29', '2024-01-19 21:25:29'),
+(18, 2, 10, 'faewf', '2024-01-19 21:25:37', '2024-01-19 21:25:37'),
+(19, 2, 11, 'fwaef', '2024-01-19 21:27:57', '2024-01-19 21:27:57'),
+(20, 2, 9, 'awfawf', '2024-01-19 21:28:24', '2024-01-19 21:28:24'),
+(21, 2, 11, 'ff', '2024-01-19 21:28:30', '2024-01-19 21:28:30');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `chat_room`
+--
+
+CREATE TABLE `chat_room` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`user_id`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `chat_room`
+--
+
+INSERT INTO `chat_room` (`id`, `user_id`, `created_at`, `updated_at`) VALUES
+(3, '[2,3]', '2024-01-19 17:00:00', '2024-01-19 17:00:00'),
+(4, '[2,4]', '2024-01-19 17:00:00', '2024-01-19 17:00:00'),
+(7, '[5,2]', '2024-01-19 20:34:38', '2024-01-19 20:34:38'),
+(8, '[6,2]', '2024-01-19 20:35:19', '2024-01-19 20:35:19'),
+(9, '[7,2]', '2024-01-19 20:35:22', '2024-01-19 20:35:22'),
+(10, '[8,2]', '2024-01-19 20:35:41', '2024-01-19 20:35:41'),
+(11, '[10,2]', '2024-01-19 20:35:42', '2024-01-19 20:35:42');
 
 -- --------------------------------------------------------
 
@@ -179,17 +247,8 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `sender_id`, `content`, `created_at`, `updated_at`, `title`) VALUES
-(27, 3, NULL, '2024-01-20 01:22:55', '2024-01-20 01:28:45', '123'),
-(28, 2, NULL, '2024-01-20 01:30:01', '2024-01-20 01:30:01', '123'),
-(29, 3, NULL, '2024-01-20 01:22:55', '2024-01-20 01:28:45', '123'),
-(30, 2, NULL, '2024-01-20 01:30:01', '2024-01-20 01:30:01', '123'),
-(31, 2, NULL, '2024-01-20 02:07:35', '2024-01-20 02:07:35', '123123'),
-(32, 2, NULL, '2024-01-20 02:08:08', '2024-01-20 02:08:08', '123'),
-(33, 2, NULL, '2024-01-20 02:08:26', '2024-01-20 02:08:26', '234'),
-(34, 2, NULL, '2024-01-20 02:08:35', '2024-01-20 02:08:35', '234'),
-(35, 2, NULL, '2024-01-20 02:08:46', '2024-01-20 02:08:46', '234'),
-(36, 2, NULL, '2024-01-20 02:09:02', '2024-01-20 02:09:02', '234'),
-(37, 2, '<ol><li><strong>123123</strong></li></ol><h3><strong>213123</strong></h3>', '2024-01-20 02:13:46', '2024-01-20 02:15:08', '123');
+(48, 3, '<p>9</p><p>&nbsp;</p>', '2024-01-21 09:17:03', '2024-01-21 09:17:03', '9'),
+(49, 3, '<p>10</p><p>&nbsp;</p>', '2024-01-21 09:17:58', '2024-01-21 09:17:58', '10');
 
 -- --------------------------------------------------------
 
@@ -310,15 +369,15 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `code`, `name`, `description`, `assign_to`, `created_by`, `approved_by`, `due_date`, `task_value`, `parent_id`, `project_id`, `priority`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'task01', 'Task 01', '', 4, 2, 3, '2024-01-06 09:30:00', 1.00, 0, 1, 'low', 'to do', NULL, '2024-01-02 21:14:14'),
+(1, 'task01', 'Task 01', '', 4, 2, 2, '2024-01-06 09:30:00', 1.00, 0, 1, 'low', 'to do', NULL, '2024-01-02 21:14:14'),
 (3, 'task02', 'Task 02', '', 4, NULL, 3, '2024-01-31 01:23:00', 1.00, 0, 1, 'medium', 'to do', '2024-01-02 06:15:40', '2024-01-03 18:23:33'),
 (4, 'task03', 'Task 03', '', 4, NULL, 3, '2024-01-13 23:30:00', 5.00, 0, 2, 'low', 'to do', '2024-01-02 21:41:13', '2024-01-02 21:50:48'),
 (5, 'task04', 'Task 04', '', 3, NULL, 3, '2024-01-04 02:36:00', 10.00, 0, 4, 'medium', 'to do', '2024-01-03 17:57:34', '2024-01-03 19:37:09'),
 (6, 'task05', 'Task 05', '', 4, NULL, 3, '2023-12-28 09:00:00', 4.00, 5, 4, 'low', 'complete', '2024-01-03 18:02:36', '2024-01-03 18:14:34'),
 (7, NULL, 'Task 06', '', 3, NULL, 3, '2024-01-04 00:00:00', 4.00, 6, 4, 'medium', 'to do', '2024-01-03 18:18:33', '2024-01-03 18:18:33'),
 (8, NULL, 'Task 07', '', 3, NULL, 3, '2024-01-05 00:30:00', 1.00, 5, 4, 'medium', 'to do', '2024-01-03 18:21:59', '2024-01-03 19:17:46'),
-(9, NULL, 'Task 08', NULL, 3, NULL, 3, '2024-01-05 00:30:00', 3.00, 3, 1, 'hight', 'complete', '2024-01-03 19:44:50', '2024-01-05 01:14:46'),
-(10, NULL, 'Task 09', '', 3, NULL, 3, '2024-01-05 10:30:00', 3.00, 0, 1, 'hight', 'awaiting confirmation', '2024-01-03 20:05:06', '2024-01-04 01:33:20'),
+(9, NULL, 'Task 08', NULL, 3, NULL, 2, '2024-01-05 00:30:00', 3.00, 3, 1, 'hight', 'complete', '2024-01-03 19:44:50', '2024-01-05 01:14:46'),
+(10, NULL, 'Task 09', '', 3, NULL, 2, '2024-01-05 10:30:00', 3.00, 0, 1, 'hight', 'awaiting confirmation', '2024-01-03 20:05:06', '2024-01-04 01:33:20'),
 (11, NULL, 'Task 10', NULL, 6, NULL, 3, '2024-01-05 15:00:00', NULL, 0, 6, 'hight', 'to do', '2024-01-04 20:57:51', '2024-01-04 20:59:20'),
 (12, NULL, 'Task 11', '', 3, NULL, 3, '2024-01-05 17:30:00', NULL, 0, 7, 'hight', 'to do', '2024-01-04 21:04:51', '2024-01-04 21:04:51'),
 (13, NULL, 'Task 12', '', 3, NULL, 3, '2024-01-05 23:30:00', NULL, 0, 3, 'medium', 'to do', '2024-01-04 21:12:12', '2024-01-04 21:12:29');
@@ -426,7 +485,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `role_id`, `country`, `phone`, `facebook`, `point_accumulated`, `expertise_coefficient`, `allowance`, `created_at`, `updated_at`) VALUES
 (2, 'admin', 'admin@dcq.com', NULL, '$2y$12$w.K5L2jT3wC2et1j8xcfEevwiwJOTHHkBFpOjsqioR8s3SeQGT9f6', 'fHQyuT8rCxwEcUOm1UB7YBVfrhCuCi7PqpE46j96AjcH70ixqMaxPEzzzinL', '1', NULL, 0, NULL, 0, 0, 0, '2023-12-30 08:13:16', '2024-01-14 04:59:23'),
 (3, 'User1', 'user1@gmail.com', NULL, '$2y$12$w.K5L2jT3wC2et1j8xcfEevwiwJOTHHkBFpOjsqioR8s3SeQGT9f6', 'tZ35Db7xuaRRC0el0pccfyQogRdJR4Q9WvaK1kjPs0iLcpFsEsSzwj7G33YQ', '2', 'Việt Nam', 905998877, NULL, 10, 1, 500000, '2024-01-02 18:46:10', '2024-01-10 18:42:17'),
-(4, 'User2', 'user2@gmail.com', NULL, '$2y$12$N5HpUYgCvk9.zAUS556uhOiE1/LF8jMjXzo2BLxFlNkdqIFbWB8ny', NULL, '2', NULL, 0, NULL, 0, 0, 0, '2024-01-02 20:37:18', '2024-01-02 20:48:25'),
+(4, 'Tràn lê huy hoàng', 'user2@gmail.com', NULL, '$2y$12$w.K5L2jT3wC2et1j8xcfEevwiwJOTHHkBFpOjsqioR8s3SeQGT9f6', 'at95nNHxQO2E98sLH1Cg5P8b362xtBPqNdDSukpmsQKCfCTe4d3ThYWlBVF0', '2', NULL, 0, NULL, 0, 0, 0, '2024-01-02 20:37:18', '2024-01-02 20:48:25'),
 (5, 'User3', 'user3@dcq.com', NULL, '$2y$12$rY2ACMJwww6fBGTMF94jz.vSDzMUa2h.a2MyhuGYr4yANpvh8Qsri', NULL, '3', NULL, 0, 'https://www.facebook.com/HA58.PROTT', 0, 0, 0, '2024-01-04 20:27:48', '2024-01-04 20:27:48'),
 (6, 'User4', 'user4@dcq.com', NULL, '$2y$12$qyFP9YiJ.zv1yY5NlfJr5O4KbZ3g3KoFbXvFwsQat7Ge.nntjwlRW', NULL, '4', NULL, 0, NULL, 0, 0, 0, '2024-01-04 20:59:11', '2024-01-04 20:59:11'),
 (7, 'user5', 'user5@gmail.com', NULL, '$2y$12$4oTsdIXwXsLZBCUpYhQCleNTIYc4APN85PyM9XTWcF0WXqbtHhxuq', 'dNCn9XdDqNfKsaGkdzjXGXiJOec7BBpxtKv2oxG05GwmalPOEj8xL12KufHW', '4', 'Việt Nam', 909887766, NULL, 100, 2, 1000000, '2024-01-10 19:06:59', '2024-01-10 19:06:59'),
@@ -451,19 +510,24 @@ CREATE TABLE `user_has_notification` (
 --
 
 INSERT INTO `user_has_notification` (`id`, `notification_id`, `user_id`, `mark_read`) VALUES
-(52, 27, 3, 1),
-(53, 28, 3, 1),
-(54, 31, 3, 1),
-(55, 32, 3, 1),
-(56, 33, 2, 0),
-(57, 34, 2, 0),
-(58, 35, 2, 0),
-(59, 36, 2, 0),
-(61, 37, 2, 0);
+(109, 48, 3, 1),
+(110, 49, 2, 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `chat_missions`
+--
+ALTER TABLE `chat_missions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `chat_room`
+--
+ALTER TABLE `chat_room`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `customer`
@@ -566,6 +630,18 @@ ALTER TABLE `user_has_notification`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `chat_missions`
+--
+ALTER TABLE `chat_missions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT cho bảng `chat_room`
+--
+ALTER TABLE `chat_room`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT cho bảng `customer`
 --
 ALTER TABLE `customer`
@@ -599,7 +675,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT cho bảng `personal_access_tokens`
@@ -647,7 +723,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_has_notification`
 --
 ALTER TABLE `user_has_notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
