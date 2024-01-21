@@ -124,6 +124,8 @@ class NotificationController extends Controller
 	}
 	public function store(Request $request)
 	{
+		// dd($request);
+
 		$user = Auth::user();
 		$content = $request->input('content');
 		$title = $request->input('title');

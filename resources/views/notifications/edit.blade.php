@@ -43,7 +43,7 @@
                                     <input type="text" name="title" class="form-control"
                                         value="{{ $notification->title }}">
                                 </div>
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label class="form-label">{{ __('messages.content') }}</label>
                                     <textarea name="content" id="editor">  {{ $notification->content }}</textarea>
 
@@ -55,8 +55,15 @@
                                                 console.error(error);
                                             });
                                     </script>
-                                </div>
+                                </div> --}}
 
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('messages.task_description') }}</label>
+                                    <textarea style="display: none;" name="content"></textarea>
+                                    <div id="snow-editor" style="height: 300px;">
+                                        <?php echo $notification->content; ?>
+                                    </div>
+                                </div>
                                 <div class="  mb-3">
                                     <label class="form-label">{{ __('messages.receiver') }}</label>
 
@@ -80,13 +87,19 @@
                                             });
                                         </script>
                                     </div>
-
+                                    <style>
+                                        .select2-selection__choice {
+                                            color: #1abc9c !important;
+                                            background-color: rgba(26, 188, 156, .18) !important;
+                                            border: 0px !important;
+                                        }
+                                    </style>
                                 </div>
 
                                 <div class="mb-3 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">Save</button>
                                     <a class="btn btn-secondary waves-effect ms-2"
-                                        href="{{ route('task.index') }}">Cancel</a>
+                                        href="{{ route('notifications') }}">Cancel</a>
                                 </div>
                             </form>
                         </div> <!-- end card-body -->

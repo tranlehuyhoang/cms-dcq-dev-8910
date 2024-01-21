@@ -39,7 +39,7 @@
                                     <label class="form-label">{{ __('messages.title') }}</label>
                                     <input type="text" name="title" class="form-control" value="">
                                 </div>
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label class="form-label">{{ __('messages.content') }}</label>
                                     <textarea name="content" id="editor"></textarea>
 
@@ -52,8 +52,15 @@
                                             });
                                     </script>
 
-                                </div>
+                                </div> --}}
 
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('messages.task_description') }}</label>
+                                    <textarea style="display: none;"></textarea>
+                                    <div id="snow-editor" style="height: 300px;" name="content">
+
+                                    </div>
+                                </div>
                                 <div class="mb-3">
 
                                     <label class="form-label">{{ __('messages.receiver') }}</label>
@@ -86,7 +93,7 @@
                                 <div class="mb-3 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">Save</button>
                                     <a class="btn btn-secondary waves-effect ms-2"
-                                        href="{{ route('task.index') }}">Cancel</a>
+                                        href="{{ route('notifications') }}">Cancel</a>
                                 </div>
                             </form>
                         </div> <!-- end card-body -->

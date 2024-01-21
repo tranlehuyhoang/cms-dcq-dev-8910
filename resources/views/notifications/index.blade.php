@@ -96,24 +96,26 @@
                                                                     </td>
 
                                                                     <td>
-                                                                        <?php 
-                                                                        foreach ($notification->userHasNotification as $userNotification):
-                                                                        ?>
-                                                                        <span class="badge badge-soft-success"
-                                                                            style="display:<?php echo count($notification->userHasNotification) > 3 ? 'none' : ''; ?>"
-                                                                            id="<?php echo count($notification->userHasNotification) > 3 ? 'receiver_' . $notification->id : ''; ?>">
-                                                                            <img src="<?php echo $userNotification->userAvatar; ?>" alt="image"
-                                                                                class="avatar-sm img-thumbnail rounded-circle"
-                                                                                title="Houston Fritz"
-                                                                                style="width: 20px; height: 20px; padding: 0px" />
-                                                                            <?php echo $userNotification->user->name; ?>
-                                                                        </span>
-                                                                        <?php endforeach; ?>
+                                                                        <?php foreach ($notification->userHasNotification as $userNotification): ?>
+                                                                        <?php if ($userNotification->mark_read == 0): ?>
+                                                                        <span class="badge badge-soft-danger">
+                                                                            <?php else: ?>
+                                                                            <span class="badge badge-soft-success">
+                                                                                <?php endif; ?>
 
-                                                                        <?php if (count($notification->userHasNotification) > 3): ?>
-                                                                        <i class="fa fa-arrow-right"
-                                                                            onclick="myFunction(<?php echo $notification->id; ?>)"></i>
-                                                                        <?php endif; ?>
+                                                                                <img src="<?php echo $userNotification->userAvatar; ?>"
+                                                                                    alt="image"
+                                                                                    class="avatar-sm img-thumbnail rounded-circle"
+                                                                                    title="Houston Fritz"
+                                                                                    style="width: 20px; height: 20px; padding: 0px" />
+                                                                                <?php echo $userNotification->user->name; ?>
+                                                                            </span>
+                                                                            <?php endforeach; ?>
+
+                                                                            <?php if (count($notification->userHasNotification) > 3): ?>
+                                                                            <i class="fa fa-arrow-right"
+                                                                                onclick="myFunction(<?php echo $notification->id; ?>)"></i>
+                                                                            <?php endif; ?>
                                                                     </td>
                                                                     <td>
                                                                         <span class=""><?php echo strlen($notification->title) > 10 ? substr($notification->title, 0, 10) . '...' : $notification->title; ?></span>
@@ -147,7 +149,16 @@
                                                                     </td>
                                                                     <td>
                                                                         <span class="">
-                                                                            @if ($notification->userHasNotification[0]->mark_read == 1)
+                                                                            @php
+                                                                                $count = 0;
+                                                                                foreach ($notification->userHasNotification as $userHasNotification) {
+                                                                                    if ($userHasNotification->mark_read == 1) {
+                                                                                        $count++;
+                                                                                    }
+                                                                                }
+                                                                            @endphp
+
+                                                                            @if ($count == count($notification->userHasNotification))
                                                                                 <span
                                                                                     class="badge badge-soft-success p-1">Yes</span>
                                                                             @else
