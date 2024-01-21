@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    {{ __('messages.tasks') }}
+    {{ __('messages.notifications') }}
 @endsection
 @section('content')
     <div class="content">
@@ -94,13 +94,18 @@
                                                                     <td>
                                                                         <span class=""><?php echo $notification->user->name; ?></span>
                                                                     </td>
-
                                                                     <td>
+                                                                        <?php $count = 0; ?>
                                                                         <?php foreach ($notification->userHasNotification as $userNotification): ?>
+                                                                        <?php $count++; ?>
                                                                         <?php if ($userNotification->mark_read == 0): ?>
-                                                                        <span class="badge badge-soft-danger">
+                                                                        <span class="badge badge-soft-danger"
+                                                                            style="display:<?php echo $count > 3 ? 'none' : ''; ?>"
+                                                                            id="<?php echo $count > 3 ? 'receiver_' . $notification->id : ''; ?>">
                                                                             <?php else: ?>
-                                                                            <span class="badge badge-soft-success">
+                                                                            <span class="badge badge-soft-success"
+                                                                                style="display:<?php echo $count > 3 ? 'none' : ''; ?>"
+                                                                                id="<?php echo $count > 3 ? 'receiver_' . $notification->id : ''; ?>">
                                                                                 <?php endif; ?>
 
                                                                                 <img src="<?php echo $userNotification->userAvatar; ?>"
@@ -117,6 +122,8 @@
                                                                                 onclick="myFunction(<?php echo $notification->id; ?>)"></i>
                                                                             <?php endif; ?>
                                                                     </td>
+
+
                                                                     <td>
                                                                         <span class=""><?php echo strlen($notification->title) > 10 ? substr($notification->title, 0, 10) . '...' : $notification->title; ?></span>
                                                                     </td>

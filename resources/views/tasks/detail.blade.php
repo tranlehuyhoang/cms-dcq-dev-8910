@@ -239,7 +239,6 @@
                                             <th scope="col">Due Date</th>
                                             <th scope="col">Priority</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col" style="width: 85px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -286,7 +285,9 @@
                                             </td>
                                             <td>
                                                 <a class="<?php echo $classStatus; ?>"
-                                                    href="{{ route('task.detail', $value['id']) }}"><?php echo $value['name']; ?></a>
+                                                    href="{{ route('task.detail', $value['id']) }}">
+                                                    <?php echo strlen($value['name']) > 10 ? substr($value['name'], 0, 10) . '...' : $value['name']; ?>
+                                                </a>
                                             </td>
                                             <td>
                                                 <div>
@@ -295,7 +296,9 @@
                                                         class="avatar-sm img-thumbnail rounded-circle"
                                                         title="Houston Fritz" />
                                                     <a class="<?php echo $classStatus; ?>"
-                                                        href="{{ route('user.detail', $value['tasks_assign_to']['id']) }}"><?php echo $value['tasks_assign_to']['name']; ?></a>
+                                                        href="{{ route('user.detail', $value['tasks_assign_to']['id']) }}">
+                                                        <?php echo strlen($value['tasks_assign_to']['name']) > 10 ? substr($value['tasks_assign_to']['name'], 0, 10) . '...' : $value['tasks_assign_to']['name']; ?>
+                                                    </a>
                                                 </div>
                                             </td>
                                             <td>
@@ -310,31 +313,7 @@
                                                     <?php echo $value['status']; ?>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <ul class="list-inline table-action m-0">
-                                                    <li class="list-inline-item">
-                                                        <a href="{{ route('task.edit', $value['id']) }}"
-                                                            class="action-icon px-1"> <i
-                                                                class="mdi mdi-square-edit-outline"></i></a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <div class="dropdown">
-                                                            <a class="action-icon px-1 dropdown-toggle" href="#"
-                                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                <i class="mdi mdi-dots-vertical"></i>
-                                                            </a>
 
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else
-                                                                    here</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </td>
                                         </tr>
                                         <?php
                                         }

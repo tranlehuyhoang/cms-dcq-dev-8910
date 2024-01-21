@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class NotificationController extends Controller
 {
 
+	const LIMIT = 10;
 	public function index(Request $request)
 	{
 		$user = Auth::user();
@@ -20,7 +21,7 @@ class NotificationController extends Controller
 		$data['arRoles'] = Roles::whereIn('code', [User::ADMIN, User::MANAGER])->get()->pluck('name', 'id')->toArray();
 
 		if ($data['role'] == 'admin') {
-			$perPage = 3;
+
 			$query = Notification::with('user', 'userHasNotification.user')
 				->whereHas('userHasNotification.user', function ($query) {
 					$query->where('user_id', '>', 0);
@@ -32,7 +33,7 @@ class NotificationController extends Controller
 				$query->where('title', 'like', '%' . $search . '%');
 			}
 
-			$notifications = $query->paginate($perPage);
+			$notifications = $query->paginate(self::LIMIT);
 
 			foreach ($notifications as $notification) {
 				$userHasNotifications = $notification->userHasNotification;
@@ -67,7 +68,7 @@ class NotificationController extends Controller
 
 			return view('notifications.index', compact('notifications'));
 		} else {
-			$perPage = 3;
+
 			$query = Notification::with('user', 'userHasNotification.user')
 				->whereHas('userHasNotification.user', function ($query) use ($user) {
 					$query->where('user_id', '=', $user->id);
@@ -79,7 +80,7 @@ class NotificationController extends Controller
 				$query->where('title', 'like', '%' . $search . '%');
 			}
 
-			$notifications = $query->paginate($perPage);
+			$notifications = $query->paginate(self::LIMIT);
 
 			foreach ($notifications as $notification) {
 				$sender = User::find($notification->sender_id);

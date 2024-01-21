@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    {{ __('messages.tasks') }}
+    {{ __('messages.notifications') }}
 @endsection
 @section('content')
     <div class="content">

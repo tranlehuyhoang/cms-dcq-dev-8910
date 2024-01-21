@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    {{ __('messages.tasks') }}
+    {{ __('messages.notifications') }}
 @endsection
 @section('content')
     <div class="content">
@@ -18,7 +18,7 @@
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('messages.dcq') }}</a>
                                 </li>
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('task.index') }}">{{ __('messages.notifications') }}</a></li>
+                                        href="{{ route('notifications') }}">{{ __('messages.notifications') }}</a></li>
                                 <li class="breadcrumb-item active">{{ __('messages.notification_create') }}</li>
                             </ol>
                         </div>

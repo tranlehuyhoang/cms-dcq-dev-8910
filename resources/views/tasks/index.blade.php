@@ -4,11 +4,7 @@
 @endsection
 @section('content')
     <div class="content">
-
-        <!-- Start Content-->
         <div class="container-fluid">
-
-            <!-- start page title -->
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
@@ -22,7 +18,6 @@
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
 
             <div class="row">
                 <div class="col-lg-12">
@@ -30,7 +25,6 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <!-- cta -->
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <a href="{{ route('task.add', 0) }}"
@@ -68,15 +62,16 @@
 
                                     <div class="custom-accordion">
                                         <?php
-                                    foreach ($arProject as $idProject => $nameProject) {
-                                        ?>
+                                        foreach ($arProject as $idProject => $nameProject) {
+                                            ?>
                                         <div class="mt-4">
-                                            <h5 class="position-relative mb-0"><a
-                                                    href="{{ route('project.edit', $idProject) }}"
-                                                    target="_blank"><?php echo $nameProject; ?> </a> <a
-                                                    href="#taskcollapse<?php echo $idProject; ?>" class="text-dark"
+                                            <h5 class="position-relative mb-0">
+                                                <a href="{{ route('project.edit', $idProject) }}"
+                                                    target="_blank"><?php echo $nameProject; ?> </a>
+                                                <a href="#taskcollapse<?php echo $idProject; ?>" class="text-dark"
                                                     data-bs-toggle="collapse"><i
-                                                        class="mdi mdi-chevron-down accordion-arrow"></i></a></h5>
+                                                        class="mdi mdi-chevron-down accordion-arrow"></i></a>
+                                            </h5>
                                             <div class="collapse show" id="taskcollapse<?php echo $idProject; ?>">
                                                 <div class="table-responsive mt-3">
                                                     <table
@@ -119,7 +114,6 @@
                                                             <tr id="child_{{ $value['id'] }}"
                                                                 class="child_tasks_<?php echo $value['parent_id']; ?> child_tasks_level_<?php echo $value['level']; ?>">
                                                                 <td>
-
                                                                     <label
                                                                         class="ps-1 label-task form-check-label <?php echo $classStatus; ?>"
                                                                         for="tasktodayCheck01">
@@ -171,33 +165,13 @@
                                                                                 class="action-icon px-1"> <i
                                                                                     class="mdi mdi-square-edit-outline"></i></a>
                                                                         </li>
-                                                                        <li class="list-inline-item">
-                                                                            <div class="dropdown">
-                                                                                <a class="action-icon px-1 dropdown-toggle"
-                                                                                    href="#" data-bs-toggle="dropdown"
-                                                                                    aria-haspopup="true"
-                                                                                    aria-expanded="false">
-                                                                                    <i class="mdi mdi-dots-vertical"></i>
-                                                                                </a>
 
-                                                                                <div
-                                                                                    class="dropdown-menu dropdown-menu-end">
-                                                                                    <a class="dropdown-item"
-                                                                                        href="#">Action</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="#">Another action</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="#">Something else
-                                                                                        here</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
                                                                     </ul>
                                                                 </td>
                                                             </tr>
                                                             <?php
-                                                            }
-                                                            ?>
+                                                                }
+                                                                ?>
 
                                                         </tbody>
                                                     </table>
@@ -205,8 +179,8 @@
                                             </div>
                                         </div>
                                         <?php
-                                    }
-                                    ?>
+                                        }
+                                        ?>
                                     </div>
 
                                     <script>
@@ -250,13 +224,11 @@
                     </div>
                 </div>
             </div>
-            <!-- end row -->
 
-        </div> <!-- container-fluid -->
+        </div>
 
-    </div> <!-- content -->
+    </div>
 
-    <!-- Footer Start -->
     <footer class="footer">
         <div class="container-fluid">
             <div class="row">
