@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="content">
-
+        {{-- @dd(get_defined_vars()); --}}
         <!-- Start Content-->
         <div class="container-fluid">
 
@@ -28,6 +28,8 @@
                 <div class="col-xl-8">
                     <div class="card">
                         <div class="card-body">
+                            <?php if ($task[0]['assign_to'] ==  $user_id ) {
+?>
                             <div class="dropdown float-end">
                                 <a href="#" class="dropdown-toggle arrow-none text-muted" data-bs-toggle="dropdown"
                                     aria-expanded="false">
@@ -35,23 +37,85 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <!-- item-->
-                                    <a href="{{ route('task.add', $task[0]['id']) }}" class="dropdown-item">
-                                        <i class="fe-plus me-1"></i></i>Add child task
-                                    </a>
-                                    <!-- item-->
-                                    <a href="{{ route('task.edit', $task[0]['id']) }}" class="dropdown-item">
-                                        <i class='mdi mdi-pencil-outline me-1'></i>Edit
-                                    </a>
-                                    <!-- item-->
-                                    <a href="javascript:void(0);" class="dropdown-item">
-                                        <i class='mdi mdi-content-copy me-1'></i>Mark as Duplicate
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <!-- item-->
-                                    <a href="javascript:void(0);" class="dropdown-item text-danger">
-                                        <i class='mdi mdi-delete-outline me-1'></i>Delete
-                                    </a>
+
+                                    <a type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop_{{ $task[0]['id'] }}">Report</a>
+
+                                </div>
+                            </div>
+                            <?php
+                            }else if ($role == 'admin') {
+                                ?>
+
+                            <div class="dropdown float-end">
+                                <a href="#" class="dropdown-toggle arrow-none text-muted" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class='mdi mdi-dots-horizontal font-18'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a type="button" class="dropdown-item">Edit</a>
+                                    <a type="button" class="dropdown-item">Delete</a>
+
+                                </div>
+                            </div>
+                            <?php
+                            }else{
+                              ?>
+
+
+                            <?php
+} ?>
+
+
+                            <div class="modal fade" id="staticBackdrop_{{ $task[0]['id'] }}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="post" id="task_form" accept-charset="UTF-8"
+                                            enctype="multipart/form-data" action="{{ route('notifications.report_task') }}">
+                                            @csrf
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Report task id:
+                                                    {{ $task[0]['id'] }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <input type="text" name="task_id" value="{{ $task[0]['id'] }}" hidden
+                                                    class="form-control" />
+                                                <div class="mb-3">
+                                                    <label class="form-label">{{ __('messages.title') }}</label>
+                                                    <input type="text" name="title" class="form-control"
+                                                        value="">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">{{ __('messages.content') }}</label>
+                                                    <textarea name="content" id="editor_{{ $task[0]['id'] }}"></textarea>
+
+                                                    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+                                                    <script>
+                                                        ClassicEditor
+                                                            .create(document.querySelector('#editor_{{ $task[0]['id'] }}'))
+                                                            .catch(error => {
+                                                                console.error(error);
+                                                            });
+                                                    </script>
+
+
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
                             <h4 class="mb-1"><?php echo $task[0]['name']; ?></h4>

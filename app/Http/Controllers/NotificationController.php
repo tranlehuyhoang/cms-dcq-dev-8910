@@ -178,7 +178,22 @@ class NotificationController extends Controller
 				'mark_read' => 0
 			]);
 		}
-		return redirect()->route('notifications');
+
+		$adminUserIds = User::whereHas('userRole', function ($query) {
+			$query->where('code', 'admin');
+		})->pluck('id');
+
+		// Create UserHasNotification records for all admin users
+		foreach ($adminUserIds as $adminUserId) {
+			UserHasNotification::create([
+				'notification_id' => $notification->id,
+				'user_id' => $adminUserId,
+				'mark_read' => 0
+			]);
+		}
+
+
+		return redirect()->route('task.index');
 		// Additional code if needed
 
 		// Return a response or redirect
