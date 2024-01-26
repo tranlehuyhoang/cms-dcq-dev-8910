@@ -7,7 +7,7 @@
 
         <!-- Start Content-->
         <div class="container-fluid">
-            
+
             <!-- start page title -->
             <div class="row">
                 <div class="col-12">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <!-- end page title --> 
+            <!-- end page title -->
 
             <div class="row">
                 <div class="col-12">
@@ -42,15 +42,22 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <input id="demo-foo-search" type="text" placeholder="Search" class="form-control" autocomplete="on">
+                                        <form action="{{ route('customer.index') }}" method="GET">
+                                            <input id="demo-foo-search" type="text" name="search"
+                                                value="{{ $search }}" placeholder="Search" class="form-control"
+                                                autocomplete="on">
+
+                                        </form>
                                     </div>
-                                    
-                                    <a id="demo-btn-addrow" class="btn btn-primary" href=""><i class="mdi mdi-plus-circle me-2"></i> Add New Customer</a>
+
+                                    <a id="demo-btn-addrow" class="btn btn-primary" href=""><i
+                                            class="mdi mdi-plus-circle me-2"></i> Add New Customer</a>
                                 </div>
                             </div>
-                            
+
                             <div class="table-responsive">
-                                <table id="demo-foo-filtering" class="table table-bordered toggle-circle mb-0" data-page-size="7">
+                                <table id="demo-foo-filtering" class="table table-bordered toggle-circle mb-0"
+                                    data-page-size="7">
                                     <thead>
                                         <tr>
                                             <th data-toggle="true">ID</th>
@@ -65,33 +72,28 @@
                                         foreach ($arCustomer as $key => $customer) {
                                             
                                             ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $customer['id']?>
-                                                </td>
-                                                <td>
-                                                    <a href=""><?php echo $customer['name']?></a>
-                                                </td>
-                                                <td><?php echo $customer['phone']?></td>
-                                                <td><?php echo $customer['address']?></span></td>
-                                                <td><?php echo $customer['facebook']?></span></td>
-                                            </tr>
-                                            <?php
+                                        <tr>
+                                            <td>
+                                                <?php echo $customer['id']; ?>
+                                            </td>
+                                            <td>
+                                                <a href=""><?php echo $customer['name']; ?></a>
+                                            </td>
+                                            <td><?php echo $customer['phone']; ?></td>
+                                            <td><?php echo $customer['address']; ?></span></td>
+                                            <td><?php echo $customer['facebook']; ?></span></td>
+                                        </tr>
+                                        <?php
                                         }
                                         ?>
-                                    
+
                                     </tbody>
-                                    <tfoot>
-                                    <tr class="active">
-                                        <td colspan="6">
-                                            <div>
-                                                <ul class="pagination pagination-rounded justify-content-end footable-pagination mb-0"><li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li><li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li><li class="footable-page active"><a data-page="0" href="#">1</a></li><li class="footable-page"><a data-page="1" href="#">2</a></li><li class="footable-page"><a data-page="2" href="#">3</a></li><li class="footable-page"><a data-page="3" href="#">4</a></li><li class="footable-page"><a data-page="4" href="#">5</a></li><li class="footable-page-arrow"><a data-page="next" href="#next">›</a></li><li class="footable-page-arrow"><a data-page="last" href="#last">»</a></li></ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
+
                                 </table>
                             </div> <!-- end .table-responsive-->
+                            <div class="pagination">
+                                {{ $arCustomer->appends(request()->except('page'))->links() }}
+                            </div>
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
@@ -106,7 +108,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
-                    <script>document.write(new Date().getFullYear())</script> &copy; Minton theme by <a href="">Coderthemes</a> 
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> &copy; Minton theme by <a href="">Coderthemes</a>
                 </div>
                 <div class="col-md-6">
                     <div class="text-md-end footer-links d-none d-sm-block">
@@ -120,40 +124,39 @@
     </footer>
     <!-- end Footer -->
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
-            $("#demo-foo-search").on('change',function(){
+            $("#demo-foo-search").on('change', function() {
                 var name = $(this).val();
                 $.ajax({
-                    url:"{{URL('customers/search')}}",
-                    type:"POST",
-                    data:{
-                        name:name
+                    url: "{{ URL('customers/search') }}",
+                    type: "POST",
+                    data: {
+                        name: name
                     },
-                    success:function(response){
+                    success: function(response) {
                         console.log(response);
                         $("tbody").empty();
-                        response.forEach(function(item){
+                        response.forEach(function(item) {
                             $("tbody").append(
-                                "<tr>"
-                                    +"<td>"+item.id+"</td>"
-                                    +"<td>"
-                                        +"<a href=''>"+item.name+"</a>"
-                                    +"</td>"
-                                    +"<td>"+item.phone+"</td>"
-                                    +"<td>"+item.address+"</td>"
-                                    +"<td>"+item.facebook+"</td>"
-                                +"</tr>")
+                                "<tr>" +
+                                "<td>" + item.id + "</td>" +
+                                "<td>" +
+                                "<a href=''>" + item.name + "</a>" +
+                                "</td>" +
+                                "<td>" + item.phone + "</td>" +
+                                "<td>" + item.address + "</td>" +
+                                "<td>" + item.facebook + "</td>" +
+                                "</tr>")
                         });
                     }
                 })
             });
         })
     </script>
-
 @endsection

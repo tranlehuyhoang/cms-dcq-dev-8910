@@ -15,22 +15,39 @@ use App\Models\Projects;
 use App\Models\Customer;
 
 
-class CustomerController extends BaseController {
-	public function index() {
-		$data['arCustomer'] = Customer::get()->keyBy('id')->toArray();
+class CustomerController extends BaseController
+{
+	public function index(Request $request)
+	{
+		$perPage = 3; // Số lượng bản ghi hiển thị trên mỗi trang
+		$search = $request->input('search'); // Lấy từ khóa tìm kiếm từ request
 
-		// dd($data);
+		$query = Customer::query();
+
+		// Thực hiện tìm kiếm nếu từ khóa tìm kiếm được cung cấp
+		if ($search) {
+			$query->where('name', 'LIKE', "%$search%");
+		}
+
+		$customers = $query->paginate($perPage); // Thực hiện phân trang
+
+		$data = [
+			'arCustomer' => $customers,
+			'search' => $search,
+		];
 
 		return view('customers.index', $data);
 	}
 
-	public function add() {
+	public function add()
+	{
 		// $data['arCustomer'] = Customer::get()->pluck('name', 'id')->toArray();
 
 		// return view('projects.add', $data);
 	}
 
-	public function edit(Request $request) {
+	public function edit(Request $request)
+	{
 		// $data['arCustomer'] = Customer::get()->pluck('name', 'id')->toArray();
 		// $data['project'] = Projects::with('projectCustomer')->where('id', '=', $request->id)->get()->toArray();
 
@@ -38,7 +55,8 @@ class CustomerController extends BaseController {
 		// return view('projects.edit', $data);
 	}
 
-	public function update(Request $request) {
+	public function update(Request $request)
+	{
 		// if (empty($request->project['id'])) {
 		// 	Projects::create(array(
 		// 		"name" => $request->project["name"],
@@ -52,7 +70,7 @@ class CustomerController extends BaseController {
 		// 	))->id;
 		// } else {
 		// 	$project = Projects::find($request->project["id"]);
-			
+
 		// 	$project->code = $request->project["code"];
 		// 	$project->name = $request->project["name"];
 		// 	$project->description = $request->project["description"];
